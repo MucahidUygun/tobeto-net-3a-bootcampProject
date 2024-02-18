@@ -1,5 +1,6 @@
 ﻿using DataAccess.Abstract;
 using DataAccess.Concretes.EntityFramework.Contexts;
+using DataAccess.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ namespace DataAccess
                 options => options.UseSqlServer(
                     configuration.GetConnectionString("TobetoDotNet3AConnectionString")));
 
+            services.AddScoped<IUserRepository, UserRepository>();                
             return services;
         }
     }
