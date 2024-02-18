@@ -1,13 +1,12 @@
-﻿using Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Business.Dtos.User.Response
 {
-    public class User:BaseEntity<int>
+    public class GetByIdResponse
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }
@@ -16,5 +15,8 @@ namespace Entities.Concrete
         public string NationalIdentity { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
     }
 }
