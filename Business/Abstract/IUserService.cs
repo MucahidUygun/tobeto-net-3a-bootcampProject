@@ -11,13 +11,11 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        Task<List<GetAllUserResponse>> GetAll();
-        Task<GetByIdResponse> GetById(int id);
-        Task<UpdateUserResponse> Update(UpdateUserRequest updateUserRequest);
-        Task<AddUserResponse> Add(AddUserRequest addUserRequest);
-        Task<DeleteUserResponse> Delete(DeleteUserRequest deleteUserRequest);
+        Task<List<GetAllUserResponse>> GetAllAsync();
+        Task<GetByIdResponse> GetByIdAsync(int id);
 
-
+        //List<GetAllUserResponse> GetAll();
+        //GetByIdUserResponse GetById(int id);
 
     }
 }

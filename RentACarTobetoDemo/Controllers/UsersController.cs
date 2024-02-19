@@ -19,30 +19,14 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await userService.GetAll());
+            return Ok(await userService.GetAllAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await userService.GetById(id));
+            return Ok(await userService.GetByIdAsync(id));
         }
 
-        [HttpPost]
-        public async Task<AddUserResponse> Add(AddUserRequest addUser)
-        {
-            return await userService.Add(addUser);
-        }
-
-        [HttpDelete]
-        public async Task<DeleteUserResponse> DeleteUserResponse(DeleteUserRequest deleteUser)
-        {
-            return await userService.Delete(deleteUser);
-        }
-        [HttpPut]
-        public async Task<UpdateUserResponse> UpdateUserResponse(UpdateUserRequest updateUser)
-        {
-            return await userService.Update(updateUser);
-        }
     }
 }

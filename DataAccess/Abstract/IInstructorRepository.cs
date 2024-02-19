@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
-    public interface IUserRepository : IAsyncRepository<User,int>,IRepository<User,int>
+    public interface IInstructorRepository : IAsyncRepository<Instructor, int>, IRepository<Instructor, int>
     {
     }
 }

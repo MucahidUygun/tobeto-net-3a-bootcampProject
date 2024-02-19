@@ -21,7 +21,10 @@ namespace DataAccess
                 options => options.UseSqlServer(
                     configuration.GetConnectionString("TobetoDotNet3AConnectionString")));
 
-            services.AddScoped<IUserRepository, UserRepository>();                
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IApplicantRepository,ApplicantRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IInstructorRepository, InstructorRepository>();
             return services;
         }
     }
