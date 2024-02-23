@@ -15,7 +15,9 @@ namespace DataAccess.Concretes.EntityFramework.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<Applicant> builder)
         {
             builder.ToTable("Applicants");
-            builder.Property(x => x.About).HasColumnName("About");
+            builder.Property(x => x.About).HasColumnName("About").IsRequired();
+
+            builder.HasMany(x => x.Applications);
         }
     }
 }
