@@ -3,7 +3,7 @@ using DataAccess.Abstract;
 using DataAccess.Concretes.EntityFramework.Contexts;
 using Entities.Concrete;
 
-namespace DataAccess.Repository
+namespace DataAccess.Concretes.Repository
 {
     public class BootcampRepository : EfRepositoryBase<Bootcamp, int, BaseDbContext>, IBootcampRepository
     {

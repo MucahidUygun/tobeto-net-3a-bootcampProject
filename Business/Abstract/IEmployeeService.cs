@@ -1,5 +1,6 @@
 ﻿using Business.Dtos.EmployeeDto.Request;
 using Business.Dtos.EmployeeDto.Response;
+using DataAccess.Utilities.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace Business.Abstract
 {
     public interface IEmployeeService
     {
-        Task<List<GetAllEmployeeResponse>> GetAll();
-        Task<GetByIdEmployeeResponse> GetById(int id);
-        Task<CreateEmployeeResponse> AddAsync(CreateEmployeeRequest request);
-        Task<DeleteEmployeeResponse> DeleteAsync(DeleteEmployeeRequest request);
-        Task<UpdateEmployeeResponse> UpdateAsync(UpdateEmployeeRequest request);
+        Task<IDataResult<List<GetAllEmployeeResponse>>> GetAll();
+        Task<IDataResult<GetByIdEmployeeResponse>> GetById(int id);
+        Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request);
+        Task<IDataResult<DeleteEmployeeResponse>> DeleteAsync(DeleteEmployeeRequest request);
+        Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request);
 
         //List<GetAllEmployeeResponse> GetAll();
         //GetByIdEmployeeResponse GetById(int id);

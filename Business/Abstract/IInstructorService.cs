@@ -1,5 +1,6 @@
 ﻿using Business.Dtos.InstructorDto.Request;
 using Business.Dtos.InstructorDto.Response;
+using DataAccess.Utilities.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace Business.Abstract
 {
     public interface IInstructorService
     {
-        Task<List<GetAllInstructorResponse>> GetAll();
-        Task<GetByIdInstructorResponse> GetById(int id);
-        Task<CreateInstructorResponse> AddAsync(CreateInstructorRequest request);
-        Task<DeleteInstructorResponse> DeleteAsync(DeleteInstructorRequest request);
-        Task<UpdateInstructorResponse> UpdateAsync(UpdateInstructorRequest request);
+        Task<IDataResult<List<GetAllInstructorResponse>>> GetAll();
+        Task<IDataResult<GetByIdInstructorResponse>> GetById(int id);
+        Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request);
+        Task<IDataResult<DeleteInstructorResponse>> DeleteAsync(DeleteInstructorRequest request);
+        Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request);
 
         //List<GetAllInstructorResponse> GetAll();
         //GetByIdInstructorResponse GetById(int id);

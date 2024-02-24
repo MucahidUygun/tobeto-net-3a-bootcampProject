@@ -17,10 +17,12 @@ namespace Entities.Concrete
         public Instructor Instructor { get; set; }
         public BootcampState BootcampState { get; set; }
         public ICollection<Application> Applications { get; set; }
+        public ICollection<BootcampImage>BootcampImages { get; set; }
 
         public Bootcamp()
         {
             Applications = new HashSet<Application>();
+            BootcampImages = new HashSet<BootcampImage>();
         }
 
 

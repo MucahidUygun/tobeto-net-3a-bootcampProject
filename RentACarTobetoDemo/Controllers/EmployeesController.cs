@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Dtos.EmployeeDto.Request;
 using Business.Dtos.EmployeeDto.Response;
+using DataAccess.Utilities.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -17,31 +18,31 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IDataResult<List<GetAllEmployeeResponse>>> GetAll()
         {
-            return Ok(await _employeeService.GetAll());
+            return await _employeeService.GetAll();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IDataResult<GetByIdEmployeeResponse>> GetById(int id)
         {
-            return Ok(await _employeeService.GetById(id));
+            return await _employeeService.GetById(id);
         }
 
         [HttpPost]
-        public async Task<CreateEmployeeResponse> AddAsync(CreateEmployeeRequest request)
+        public async Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request)
         {
             return await _employeeService.AddAsync(request);
         }
 
         [HttpDelete]
-        public async Task<DeleteEmployeeResponse> DeleteAsync(DeleteEmployeeRequest request)
+        public async Task<IDataResult<DeleteEmployeeResponse>> DeleteAsync(DeleteEmployeeRequest request)
         {
             return await _employeeService.DeleteAsync(request);
         }
 
         [HttpPut]
-        public async Task<UpdateEmployeeResponse> UpdateAsync(UpdateEmployeeRequest request)
+        public async Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request)
         {
             return await _employeeService.UpdateAsync(request);
         }

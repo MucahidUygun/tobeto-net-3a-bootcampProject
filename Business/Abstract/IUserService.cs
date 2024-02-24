@@ -1,5 +1,6 @@
 ﻿using Business.Dtos.User.Request;
 using Business.Dtos.User.Response;
+using DataAccess.Utilities.Results;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        Task<List<GetAllUserResponse>> GetAllAsync();
-        Task<GetByIdResponse> GetByIdAsync(int id);
+        Task<IDataResult<List<GetAllUserResponse>>> GetAllAsync();
+        Task<IDataResult<GetByIdResponse>> GetByIdAsync(int id);
 
         //List<GetAllUserResponse> GetAll();
         //GetByIdUserResponse GetById(int id);

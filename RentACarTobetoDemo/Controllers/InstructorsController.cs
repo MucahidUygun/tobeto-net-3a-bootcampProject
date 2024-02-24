@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Dtos.InstructorDto.Request;
 using Business.Dtos.InstructorDto.Response;
+using DataAccess.Utilities.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -18,31 +19,31 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IDataResult<List<GetAllInstructorResponse>>> GetAll()
         {
-            return Ok(await _instructorService.GetAll());
+            return await _instructorService.GetAll();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IDataResult<GetByIdInstructorResponse>> GetById(int id)
         {
-            return Ok(await _instructorService.GetById(id));
+            return await _instructorService.GetById(id);
         }
 
         [HttpPost]
-        public async Task<CreateInstructorResponse> AddAsync(CreateInstructorRequest request)
+        public async Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request)
         {
             return await _instructorService.AddAsync(request);
         }
 
         [HttpDelete]
-        public async Task<DeleteInstructorResponse> DeleteAsync(DeleteInstructorRequest request)
+        public async Task<IDataResult<DeleteInstructorResponse>> DeleteAsync(DeleteInstructorRequest request)
         {
             return await _instructorService.DeleteAsync(request);
         }
 
         [HttpPut]
-        public async Task<UpdateInstructorResponse> UpdateAsync(UpdateInstructorRequest request)
+        public async Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
         {
             return await _instructorService.UpdateAsync(request);
         }

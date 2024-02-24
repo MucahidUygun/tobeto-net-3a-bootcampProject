@@ -8,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Repository
+namespace DataAccess.Concretes.Repository
 {
-    public class InstructorRepository : EfRepositoryBase<Instructor, int,BaseDbContext>,IInstructorRepository
+    public class ApplicantRepository : EfRepositoryBase<Applicant, int, BaseDbContext>, IApplicantRepository
     {
-        public InstructorRepository(BaseDbContext baseDbContext):base(baseDbContext)
+        public ApplicantRepository(BaseDbContext context) : base(context)
         {
         }
     }

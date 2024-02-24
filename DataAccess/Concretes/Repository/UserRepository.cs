@@ -10,9 +10,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Repository
+namespace DataAccess.Concretes.Repository
 {
-    public class UserRepository : EfRepositoryBase<User,int,BaseDbContext>, IUserRepository
+    public class UserRepository : EfRepositoryBase<User, int, BaseDbContext>, IUserRepository
     {
         protected readonly BaseDbContext _dbContext;
 

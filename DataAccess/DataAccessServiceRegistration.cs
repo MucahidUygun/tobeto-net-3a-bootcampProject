@@ -1,6 +1,6 @@
 ﻿using DataAccess.Abstract;
 using DataAccess.Concretes.EntityFramework.Contexts;
-using DataAccess.Repository;
+using DataAccess.Concretes.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

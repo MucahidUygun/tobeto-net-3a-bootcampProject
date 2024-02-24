@@ -1,0 +1,17 @@
+﻿using Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Entities.Concrete
+{
+    public class BootcampImage : BaseEntity<int>
+    {
+        public int BootcampId { get; set; }
+        public string ImagePath { get; set; }
+
+        public virtual Bootcamp Bootcamp { get; set; }
+    }
+}

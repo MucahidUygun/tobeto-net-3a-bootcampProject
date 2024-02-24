@@ -1,5 +1,6 @@
 ﻿using Business.Dtos.ApplicantDtos.Request;
 using Business.Dtos.ApplicantDtos.Response;
+using DataAccess.Utilities.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace Business.Abstract
 {
     public interface IApplicantService
     {
-        Task<List<GetAllApplicantResponse>> GetAll();
-        Task<GetByIdApplicantResponse> GetById(int id);
-        Task<CreateApplicantResponse> AddAsync(CreateApplicantRequest request);
-        Task<DeleteApplicantResponse> DeleteAsync(DeleteApplicantRequest request);
-        Task<UpdateApplicantResponse> UpdateAsync(UpdateApplicantRequest request);
+        Task<IDataResult<List<GetAllApplicantResponse>>> GetAll();
+        Task<IDataResult<GetByIdApplicantResponse>> GetById(int id);
+        Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request);
+        Task<IDataResult<DeleteApplicantResponse>> DeleteAsync(DeleteApplicantRequest request);
+        Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request);
 
         //List<GetAllApplicantResponse> GetAll();
         //GetByIdApplicantResponse GetById(int id);

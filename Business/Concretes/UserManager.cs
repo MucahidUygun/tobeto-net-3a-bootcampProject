@@ -1,7 +1,9 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
 using Business.Dtos.User.Request;
 using Business.Dtos.User.Response;
 using DataAccess.Abstract;
+using DataAccess.Utilities.Results;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -14,50 +16,26 @@ namespace Business.Concretes
     public class UserManager : IUserService
     {
         protected readonly IUserRepository _userRepository;
+        protected readonly IMapper _mapper;
 
-        public UserManager(IUserRepository userRepository)
+        public UserManager(IUserRepository userRepository,IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
 
-        public async Task<List<GetAllUserResponse>> GetAllAsync()
+        public async Task<IDataResult<List<GetAllUserResponse>>> GetAllAsync()
         {
-            List<GetAllUserResponse> list = new List<GetAllUserResponse>();
-
-            foreach (var user in await _userRepository.GetAllAsync())
-            {
-                list.Add(
-                    new GetAllUserResponse 
-                    {
-                        UserName = user.UserName,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        DateOfBirth = user.DateOfBirth,
-                        NationalIdentity = user.NationalIdentity,
-                        Email = user.Email,
-                        Password = user.Password,
-                    }
-                    );
-            }
-            return list;
+            List<GetAllUserResponse> list = _mapper.Map<List<GetAllUserResponse>>(await _userRepository.GetAllAsync());
+            return new SuccessDataResult<List<GetAllUserResponse>>(list,"Başarıyla Listelendi");
 
         }
 
-        public async Task<GetByIdResponse> GetByIdAsync(int id)
+        public async Task<IDataResult<GetByIdResponse>> GetByIdAsync(int id)
         {
-            User user = await _userRepository.GetAsync(x=>x.Id==id);
-            GetByIdResponse response = new GetByIdResponse 
-            {
-                UserName = user.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                DateOfBirth = user.DateOfBirth,
-                NationalIdentity = user.NationalIdentity,
-                Email = user.Email,
-                Password = user.Password,
-            };
-            return response;
+            GetByIdResponse user = _mapper.Map<GetByIdResponse>(await _userRepository.GetAsync(x => x.Id == id));
+            return new SuccessDataResult<GetByIdResponse>(user,"Başarıyla Eklendi.");
         }
 
         

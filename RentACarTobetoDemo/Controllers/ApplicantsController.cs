@@ -1,13 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Dtos.ApplicantDtos.Request;
 using Business.Dtos.ApplicantDtos.Response;
+using DataAccess.Utilities.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicantsController : ControllerBase
+    public class ApplicantsController : BaseController
     {
         private readonly IApplicantService _applicantService;
 
@@ -19,31 +20,31 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _applicantService.GetAll());
+            return HandleDataResult(await _applicantService.GetAll());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await _applicantService.GetById(id));
+            return HandleDataResult(await _applicantService.GetById(id));
         }
 
         [HttpPost]
-        public async Task<CreateApplicantResponse> AddAsync(CreateApplicantRequest request)
+        public async Task<IActionResult> AddAsync(CreateApplicantRequest request)
         {
-            return await _applicantService.AddAsync(request);
+            return HandleDataResult(await _applicantService.AddAsync(request));
         }
 
         [HttpDelete]
-        public async Task<DeleteApplicantResponse> DeleteAsync(DeleteApplicantRequest request)
+        public async Task<IActionResult> DeleteAsync(DeleteApplicantRequest request)
         {
-            return await _applicantService.DeleteAsync(request);
+            return HandleDataResult(await _applicantService.DeleteAsync(request));
         }
 
         [HttpPut]
-        public async Task<UpdateApplicantResponse> UpdateAsync(UpdateApplicantRequest request)
+        public async Task<IActionResult> UpdateAsync(UpdateApplicantRequest request)
         {
-            return await _applicantService.UpdateAsync(request);
+            return HandleDataResult(await _applicantService.UpdateAsync(request));
         }
 
     }

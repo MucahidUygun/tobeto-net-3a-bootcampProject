@@ -3,7 +3,6 @@ using Business.Abstract;
 using Business.Dtos.ApplicationStateDto.Request;
 using Business.Dtos.ApplicationStateDto.Response;
 using DataAccess.Abstract;
-using DataAccess.Repository;
 using DataAccess.Utilities.Results;
 using Entities.Concrete;
 using System;

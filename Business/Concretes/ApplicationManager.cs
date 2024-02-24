@@ -4,7 +4,6 @@ using Business.Dtos.ApplicationDto.Request;
 using Business.Dtos.ApplicationDto.Response;
 using Core.DataAccess;
 using DataAccess.Abstract;
-using DataAccess.Repository;
 using DataAccess.Utilities.Results;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +37,7 @@ namespace Business.Concretes
 
         public async Task<IResult> DeleteAsync(DeleteApplicationRequest request)
         {
-            Application application = _repository.Get(x => x.Id == request.Id);
+            Application application = await _repository.GetAsync(x => x.Id == request.Id);
             await _repository.DeleteAsync(application);
             return new SuccessResult("Başvuru silme başarılı.");
         }

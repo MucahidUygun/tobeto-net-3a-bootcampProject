@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Repository
+namespace DataAccess.Concretes.Repository
 {
     public class ApplicationRepository : EfRepositoryBase<Application, int, BaseDbContext>, IApplicationRepository
     {
