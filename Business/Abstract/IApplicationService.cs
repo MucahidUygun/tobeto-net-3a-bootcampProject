@@ -13,7 +13,7 @@ namespace Business.Abstract
     {
         Task<IDataResult<List<GetAllApplicationResponse>>> GetAllAsync();
         Task<IDataResult<GetByIdApplicationResponse>> GetByIdAsync(int id);
-        Task<IResult> DeleteAsync(DeleteApplicationRequest id);
+        Task<IDataResult<DeleteApplicationResponse>> DeleteAsync(DeleteApplicationRequest id);
         Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request);
         Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request);
     }

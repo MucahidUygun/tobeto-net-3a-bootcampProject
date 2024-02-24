@@ -19,6 +19,6 @@ namespace Business.Abstract
         Task<IDataResult<GetByIdBootcampResponse>> GetByIdAsync(int id);
         Task<IDataResult<CreateBootcampResponse>> CreateAsync(CreateBootcampRequest request);
         Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootcampRequest request);
-        Task<IResult> DeleteAsync(DeleteBootcampRequest request);
+        Task<IDataResult<DeleteBootcampResponse>> DeleteAsync(DeleteBootcampRequest request);
     }
 }

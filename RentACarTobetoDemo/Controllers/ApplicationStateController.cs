@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicationStateController : ControllerBase
+    public class ApplicationStateController : BaseController
     {
         private readonly IApplicationStateService _service;
 
@@ -19,29 +19,29 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IDataResult<List<GetAllApplicationStateResponse>>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return await _service.GetAllAsync();
+            return HandleDataResult(await _service.GetAllAsync());
         }
         [HttpGet("{id}")]
-        public async Task<IDataResult<GetByIdApplicationStateResponse>> Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return await _service.GetByIdApplicationStateAsync(id);
+            return HandleDataResult(await _service.GetByIdApplicationStateAsync(id));
         }
         [HttpPost]
-        public async Task<IDataResult<CreateApplicationStateResponse>> Add(CreateApplicationStateRequest request)
+        public async Task<IActionResult> Add(CreateApplicationStateRequest request)
         {
-            return await _service.AddAsync(request);
+            return HandleDataResult(await _service.AddAsync(request));
         }
         [HttpPut]
-        public async Task<IDataResult<UpdateApplicationStateResponse>> Update (UpdateApplicationStateRequest request)
+        public async Task<IActionResult> Update (UpdateApplicationStateRequest request)
         {
-            return await _service.UpdateAsync(request);
+            return HandleDataResult(await _service.UpdateAsync(request));
         }
         [HttpDelete]
-        public async Task<IResult> Delete (DeleteApplicationStateRequest request)
+        public async Task<IActionResult> Delete (DeleteApplicationStateRequest request)
         {
-            return await _service.DeleteAsync(request);
+            return HandleDataResult(await _service.DeleteAsync(request));
         }
     }
 }

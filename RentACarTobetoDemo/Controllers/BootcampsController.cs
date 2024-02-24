@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BootcampsController : ControllerBase
+    public class BootcampsController : BaseController
     {
         private readonly IBootcampService _service;
         public BootcampsController(IBootcampService service)
@@ -18,31 +18,31 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IDataResult<CreateBootcampResponse>> Add(CreateBootcampRequest request) 
+        public async Task<IActionResult> Add(CreateBootcampRequest request) 
         {
-            return await _service.CreateAsync(request);
+            return HandleDataResult(await _service.CreateAsync(request));
         }
 
         [HttpGet]
-        public async Task<IDataResult<List<GetAllBootcampResponse>>> GetAll() 
+        public async Task<IActionResult> GetAll() 
         {
-            return await _service.GetAllAsync();
+            return HandleDataResult(await _service.GetAllAsync());
         }
 
         [HttpGet("{id}")]
-        public async Task<IDataResult<GetByIdBootcampResponse>> GetById(int id) 
+        public async Task<IActionResult> GetById(int id) 
         {
-            return await _service.GetByIdAsync(id);
+            return HandleDataResult(await _service.GetByIdAsync(id));
         }
         [HttpPut]
-        public async Task<IDataResult<UpdateBootcampResponse>> Update(UpdateBootcampRequest request) 
+        public async Task<IActionResult> Update(UpdateBootcampRequest request) 
         {
-            return await _service.UpdateAsync(request);
+            return HandleDataResult(await _service.UpdateAsync(request));
         }
         [HttpDelete]
-        public async Task<IResult> Delete(DeleteBootcampRequest request)
+        public async Task<IActionResult> Delete(DeleteBootcampRequest request)
         {
-            return await _service.DeleteAsync(request);
+            return HandleDataResult(await _service.DeleteAsync(request));
         }
     }
 }

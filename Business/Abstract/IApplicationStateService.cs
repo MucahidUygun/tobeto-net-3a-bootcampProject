@@ -12,7 +12,7 @@ namespace Business.Abstract
     public interface IApplicationStateService
     {
         Task<IDataResult<CreateApplicationStateResponse>> AddAsync(CreateApplicationStateRequest request);
-        Task<IResult> DeleteAsync(DeleteApplicationStateRequest request);
+        Task<IDataResult<DeleteApplicationStateResponse>> DeleteAsync(DeleteApplicationStateRequest request);
         Task<IDataResult<UpdateApplicationStateResponse>> UpdateAsync(UpdateApplicationStateRequest request);
         Task<IDataResult<List<GetAllApplicationStateResponse>>> GetAllAsync();
         Task<IDataResult<GetByIdApplicationStateResponse>> GetByIdApplicationStateAsync(int id);

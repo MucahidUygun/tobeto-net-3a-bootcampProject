@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BootcampStateController : ControllerBase
+    public class BootcampStateController : BaseController
     {
         private readonly IBootcampStateService _service;
 
@@ -19,29 +19,29 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IDataResult<CreateBootcampStateResponse>> Create(CreateBootcampStateRequest request)
+        public async Task<IActionResult> Create(CreateBootcampStateRequest request)
         {
-            return await _service.AddAsync(request);
+            return HandleDataResult(await _service.AddAsync(request));
         }
         [HttpGet]
-        public async Task<IDataResult<List<GetAllBootcampStateResponse>>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return await _service.GetAllAsync();
+            return HandleDataResult(await _service.GetAllAsync());
         }
         [HttpGet("{id}")]
-        public async Task<IDataResult<GetByIdBootcampStateResponse>> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return await _service.GetByIdAsync(id);
+            return HandleDataResult(await _service.GetByIdAsync(id));
         }
         [HttpPut]
-        public async Task<IDataResult<UpdateBootcampStateResponse>> Update(UpdateBootcampStateRequest request)
+        public async Task<IActionResult> Update(UpdateBootcampStateRequest request)
         {
-            return await _service.UpdateAsync(request);
+            return HandleDataResult(await _service.UpdateAsync(request));
         }
         [HttpDelete]
-        public async Task<IResult> Delete (DeleteBootcampStateRequest request)
+        public async Task<IActionResult> Delete (DeleteBootcampStateRequest request)
         {
-            return await _service.Delete(request);
+            return HandleDataResult(await _service.Delete(request));
         }
     }
 }

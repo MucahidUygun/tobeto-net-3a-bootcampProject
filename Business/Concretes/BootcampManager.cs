@@ -34,11 +34,12 @@ namespace Business.Concretes
             return new SuccessDataResult<CreateBootcampResponse>(response,"Ekle Başarılı");
         }
 
-        public async Task<IResult> DeleteAsync(DeleteBootcampRequest request)
+        public async Task<IDataResult<DeleteBootcampResponse>> DeleteAsync(DeleteBootcampRequest request)
         {
             Bootcamp bootcamp = _mapper.Map<Bootcamp>(request);
             await _repository.DeleteAsync(bootcamp);
-            return new SuccessResult("Silme Başarılı");
+            DeleteBootcampResponse response = _mapper.Map<DeleteBootcampResponse>(bootcamp);
+            return new SuccessDataResult<DeleteBootcampResponse>(response,"Silme Başarılı");
         }
 
         public async Task<IDataResult<List<GetAllBootcampResponse>>> GetAllAsync()

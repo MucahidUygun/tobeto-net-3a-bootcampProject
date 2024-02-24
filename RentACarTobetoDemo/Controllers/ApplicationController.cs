@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicationController : ControllerBase
+    public class ApplicationController : BaseController
     {
         private readonly IApplicationService _applicationService;
 
@@ -19,33 +19,33 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync()
         {
-            return await _applicationService.GetAllAsync();
+            return HandleDataResult(await _applicationService.GetAllAsync());
         }
 
         [HttpGet("{id}")]
-        public async Task<IDataResult<GetByIdApplicationResponse>> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return await _applicationService.GetByIdAsync(id);
+            return HandleDataResult(await _applicationService.GetByIdAsync(id));
         }
 
         [HttpPost]
-        public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
+        public async Task<IActionResult> AddAsync(CreateApplicationRequest request)
         {
-            return await _applicationService.AddAsync(request);
+            return HandleDataResult(await _applicationService.AddAsync(request));
         }
 
         [HttpDelete]
-        public async Task<IResult> DeleteAsync(DeleteApplicationRequest request)
+        public async Task<IActionResult> DeleteAsync(DeleteApplicationRequest request)
         {
-            return await _applicationService.DeleteAsync(request);
+            return HandleDataResult(await _applicationService.DeleteAsync(request));
         }
 
         [HttpPut]
-        public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
+        public async Task<IActionResult> UpdateAsync(UpdateApplicationRequest request)
         {
-            return await _applicationService.UpdateAsync(request);
+            return HandleDataResult(await _applicationService.UpdateAsync(request));
         }
         
     }
