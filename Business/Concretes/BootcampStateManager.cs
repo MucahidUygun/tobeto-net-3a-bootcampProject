@@ -58,7 +58,8 @@ namespace Business.Concretes
 
         public async Task<IDataResult<UpdateBootcampStateResponse>> UpdateAsync(UpdateBootcampStateRequest request)
         {
-            BootcampState bootcampState = _mapper.Map<BootcampState>(request);
+            BootcampState bootcampState =await _repository.GetAsync(x => x.Id == request.Id);
+            _mapper.Map(request,bootcampState);
             await _repository.UpdateAsync(bootcampState);
 
             UpdateBootcampStateResponse response = _mapper.Map<UpdateBootcampStateResponse>(bootcampState);

@@ -62,7 +62,8 @@ namespace Business.Concretes
 
         public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
         {
-            Application application = _mapper.Map<Application>(request);
+            Application application = await _repository.GetAsync(x => x.Id == request.Id);
+            _mapper.Map(request,application);
             await _repository.UpdateAsync(application);
 
             UpdateApplicationResponse response = _mapper.Map<UpdateApplicationResponse>(application);

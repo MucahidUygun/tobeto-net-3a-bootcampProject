@@ -59,7 +59,8 @@ namespace Business.Concretes
 
         public async Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request)
         {
-            Employee employee = _mapper.Map<Employee>(request);
+            Employee employee =await _employeeRepository.GetAsync(x => x.Id == request.Id);
+            _mapper.Map(request,employee);
             await _employeeRepository.UpdateAsync(employee);
 
             UpdateEmployeeResponse response = _mapper.Map<UpdateEmployeeResponse>(employee);
