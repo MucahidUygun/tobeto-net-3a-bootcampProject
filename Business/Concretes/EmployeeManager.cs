@@ -24,16 +24,17 @@ namespace Business.Concretes
             _mapper = mapper;
         }
 
-        public async Task<IDataResult<List<GetAllEmployeeResponse>>> GetAll()
+        public async Task<IDataResult<List<GetAllEmployeeResponse>>> GetAllAsync()
         {
             List<GetAllEmployeeResponse> employees = _mapper.Map<List<GetAllEmployeeResponse>>(await _employeeRepository.GetAllAsync());
                 
             return new SuccessDataResult<List<GetAllEmployeeResponse>>(employees,"Başarıyla Listelendi");
         }
 
-        public async Task<IDataResult<GetByIdEmployeeResponse>> GetById(int id)
+        public async Task<IDataResult<GetByIdEmployeeResponse>> GetByIdAsync(int id)
         {
-            GetByIdEmployeeResponse response = _mapper.Map<GetByIdEmployeeResponse>(await _employeeRepository.GetAsync(x=>x.Id==id));
+            Employee employee = await _employeeRepository.GetAsync(x => x.Id == id);
+            GetByIdEmployeeResponse response = _mapper.Map<GetByIdEmployeeResponse>(employee);
 
             return new SuccessDataResult<GetByIdEmployeeResponse>(response,"Başarıyla listelendi");
         }
@@ -48,13 +49,13 @@ namespace Business.Concretes
             return new SuccessDataResult<CreateEmployeeResponse>(response,"Başarıyla Eklendi");
         }
 
-        public async Task<IDataResult<DeleteEmployeeResponse>> DeleteAsync(DeleteEmployeeRequest request)
+        public async Task<IResult> DeleteAsync(DeleteEmployeeRequest request)
         {
             Employee employee = await _employeeRepository.GetAsync(x => x.Id == request.Id);
             await _employeeRepository.DeleteAsync(employee);
 
             DeleteEmployeeResponse response = _mapper.Map<DeleteEmployeeResponse>(employee);
-            return new SuccessDataResult<DeleteEmployeeResponse>(response,"Başarıyla Silindi");
+            return new SuccessResult("Başarıyla Silindi");
         }
 
         public async Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request)

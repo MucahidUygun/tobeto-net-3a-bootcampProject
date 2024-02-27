@@ -1,5 +1,6 @@
 using Business;
 using DataAccess;
+using Core.Exceptions.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.ConfigureCustomExceptionMiddleware();
 }
 
 app.UseHttpsRedirection();

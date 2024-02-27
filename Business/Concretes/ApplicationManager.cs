@@ -35,12 +35,12 @@ namespace Business.Concretes
             return new SuccessDataResult<CreateApplicationResponse>(response, "Başvuru ekleme başarılı.");
         }
 
-        public async Task<IDataResult<DeleteApplicationResponse>> DeleteAsync(DeleteApplicationRequest request)
+        public async Task<IResult> DeleteAsync(DeleteApplicationRequest request)
         {
             Application application = await _repository.GetAsync(x => x.Id == request.Id);
             await _repository.DeleteAsync(application);
             DeleteApplicationResponse response = _mapper.Map<DeleteApplicationResponse>(application);
-            return new SuccessDataResult<DeleteApplicationResponse>(response,"Başvuru silme başarılı.");
+            return new SuccessResult("Başvuru silme başarılı.");
         }
 
         public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAllAsync()

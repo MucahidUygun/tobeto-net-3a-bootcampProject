@@ -34,8 +34,9 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByIdResponse>> GetByIdAsync(int id)
         {
-            GetByIdResponse user = _mapper.Map<GetByIdResponse>(await _userRepository.GetAsync(x => x.Id == id));
-            return new SuccessDataResult<GetByIdResponse>(user,"Başarıyla Eklendi.");
+            User user = await _userRepository.GetAsync(x => x.Id == id);
+            GetByIdResponse response = _mapper.Map<GetByIdResponse>(user);
+            return new SuccessDataResult<GetByIdResponse>(response,"Başarıyla Eklendi.");
         }
 
         

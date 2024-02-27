@@ -51,7 +51,8 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByIdBlacklistResponse>> GetByIdBlacklistAsync(int id)
         {
-            GetByIdBlacklistResponse responses = _mapper.Map<GetByIdBlacklistResponse>(await _repository.GetAsync(x=>x.Id==id,include:x=>x.Include(x=>x.Applicant)));
+            Blacklist blacklist = await _repository.GetAsync(x => x.Id == id, include: x => x.Include(x => x.Applicant));
+            GetByIdBlacklistResponse responses = _mapper.Map<GetByIdBlacklistResponse>(blacklist);
 
             return new SuccessDataResult<GetByIdBlacklistResponse>(responses, "Başarıyla Listelendi.");
         }

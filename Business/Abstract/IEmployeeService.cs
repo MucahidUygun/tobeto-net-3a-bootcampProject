@@ -11,10 +11,10 @@ namespace Business.Abstract
 {
     public interface IEmployeeService
     {
-        Task<IDataResult<List<GetAllEmployeeResponse>>> GetAll();
-        Task<IDataResult<GetByIdEmployeeResponse>> GetById(int id);
+        Task<IDataResult<List<GetAllEmployeeResponse>>> GetAllAsync();
+        Task<IDataResult<GetByIdEmployeeResponse>> GetByIdAsync(int id);
         Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request);
-        Task<IDataResult<DeleteEmployeeResponse>> DeleteAsync(DeleteEmployeeRequest request);
+        Task<IResult> DeleteAsync(DeleteEmployeeRequest request);
         Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request);
 
         //List<GetAllEmployeeResponse> GetAll();

@@ -23,17 +23,17 @@ namespace Business.Concretes
             _instructorRepository = instructorRepository;
             _mapper = mapper;
         }
-        public async Task<IDataResult<List<GetAllInstructorResponse>>> GetAll()
+        public async Task<IDataResult<List<GetAllInstructorResponse>>> GetAllAsync()
         {
             List<GetAllInstructorResponse> instructors = _mapper.Map<List<GetAllInstructorResponse>>(await _instructorRepository.GetAllAsync());
             return new SuccessDataResult<List<GetAllInstructorResponse>>(instructors,"Başarıyla Listelendi");
         }
 
-        public async Task<IDataResult<GetByIdInstructorResponse>> GetById(int id)
+        public async Task<IDataResult<GetByIdInstructorResponse>> GetByIdAsync(int id)
         {
-
-            GetByIdInstructorResponse instructor = _mapper.Map<GetByIdInstructorResponse>(await _instructorRepository.GetAsync(x => x.Id == id));
-            return new SuccessDataResult<GetByIdInstructorResponse>(instructor,"Başarıyla Id'ye göre listelendi");
+            Instructor instructor = await _instructorRepository.GetAsync(x => x.Id == id);
+            GetByIdInstructorResponse response = _mapper.Map<GetByIdInstructorResponse>(instructor);
+            return new SuccessDataResult<GetByIdInstructorResponse>(response, "Başarıyla Id'ye göre listelendi");
         }
 
         public async Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request)
@@ -45,13 +45,13 @@ namespace Business.Concretes
             return new SuccessDataResult<CreateInstructorResponse>(response,"Başarıyla Eklendi.");
         }
 
-        public async Task<IDataResult<DeleteInstructorResponse>> DeleteAsync(DeleteInstructorRequest request)
+        public async Task<IResult> DeleteAsync(DeleteInstructorRequest request)
         {
             Instructor instructor = await _instructorRepository.GetAsync(x => x.Id == request.Id);
             await _instructorRepository.DeleteAsync(instructor);
 
             DeleteInstructorResponse response = _mapper.Map<DeleteInstructorResponse>(instructor);
-            return new SuccessDataResult<DeleteInstructorResponse>(response,"Başarıyla silindi");
+            return new SuccessResult("Başarıyla silindi");
         }
 
         public async Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)

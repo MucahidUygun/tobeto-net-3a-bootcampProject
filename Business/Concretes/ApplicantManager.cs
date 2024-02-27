@@ -23,16 +23,17 @@ namespace Business.Concretes
             _mapper = mapper;
         }
 
-        public async Task<IDataResult<List<GetAllApplicantResponse>>> GetAll()
+        public async Task<IDataResult<List<GetAllApplicantResponse>>> GetAllAsync()
         {
             List<GetAllApplicantResponse> responses = _mapper.Map<List<GetAllApplicantResponse>>(await _applicantRepository.GetAllAsync());
  
             return new SuccessDataResult<List<GetAllApplicantResponse>>(responses, "Başarıyla Listelendi.");
         }
 
-        public async Task<IDataResult<GetByIdApplicantResponse>> GetById(int id)
+        public async Task<IDataResult<GetByIdApplicantResponse>> GetByIdAsync(int id)
         {
-            GetByIdApplicantResponse response = _mapper.Map<GetByIdApplicantResponse>(await _applicantRepository.GetAsync(x=>x.Id==id));
+            Applicant applicant = await _applicantRepository.GetAsync(x => x.Id == id);
+            GetByIdApplicantResponse response = _mapper.Map<GetByIdApplicantResponse>(applicant);
             
             return new SuccessDataResult<GetByIdApplicantResponse>(response,"Id ye göre listelendi");
         }
@@ -47,13 +48,13 @@ namespace Business.Concretes
             return new SuccessDataResult<CreateApplicantResponse>(response,"Başarıyla eklendi");
         }
 
-        public async Task<IDataResult<DeleteApplicantResponse>> DeleteAsync(DeleteApplicantRequest request)
+        public async Task<IResult> DeleteAsync(DeleteApplicantRequest request)
         {
             Applicant applicant = await _applicantRepository.GetAsync(x => x.Id == request.Id);
             await _applicantRepository.DeleteAsync(applicant);
 
             DeleteApplicantResponse response = _mapper.Map<DeleteApplicantResponse>(applicant);
-            return new SuccessDataResult<DeleteApplicantResponse>(response,"Başarıyla Silindi");
+            return new SuccessResult("Başarıyla Silindi");
         }
 
         public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)

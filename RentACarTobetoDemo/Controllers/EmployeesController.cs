@@ -20,13 +20,13 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return HandleDataResult(await _employeeService.GetAll());
+            return HandleDataResult(await _employeeService.GetAllAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return HandleDataResult(await _employeeService.GetById(id));
+            return HandleDataResult(await _employeeService.GetByIdAsync(id));
         }
 
         [HttpPost]
@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(DeleteEmployeeRequest request)
         {
-            return HandleDataResult(await _employeeService.DeleteAsync(request));
+            return HandleResult(await _employeeService.DeleteAsync(request));
         }
 
         [HttpPut]

@@ -11,10 +11,10 @@ namespace Business.Abstract
 {
     public interface IInstructorService
     {
-        Task<IDataResult<List<GetAllInstructorResponse>>> GetAll();
-        Task<IDataResult<GetByIdInstructorResponse>> GetById(int id);
+        Task<IDataResult<List<GetAllInstructorResponse>>> GetAllAsync();
+        Task<IDataResult<GetByIdInstructorResponse>> GetByIdAsync(int id);
         Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request);
-        Task<IDataResult<DeleteInstructorResponse>> DeleteAsync(DeleteInstructorRequest request);
+        Task<IResult> DeleteAsync(DeleteInstructorRequest request);
         Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request);
 
         //List<GetAllInstructorResponse> GetAll();

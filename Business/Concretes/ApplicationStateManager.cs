@@ -34,14 +34,14 @@ namespace Business.Concretes
 
         }
 
-        public async Task<IDataResult<DeleteApplicationStateResponse>> DeleteAsync(DeleteApplicationStateRequest request)
+        public async Task<IResult> DeleteAsync(DeleteApplicationStateRequest request)
         {
             ApplicationState applicationState = await _repository.GetAsync(x=> x.Id == request.Id);
             await _repository.DeleteAsync(applicationState);
 
             DeleteApplicationStateResponse response = _mapper.Map<DeleteApplicationStateResponse>(applicationState);
 
-            return new SuccessDataResult<DeleteApplicationStateResponse>(response,"Başarıyla Silindi");
+            return new SuccessResult("Başarıyla Silindi");
 
         }
 
