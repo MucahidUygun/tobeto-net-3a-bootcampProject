@@ -22,6 +22,7 @@ namespace DataAccess.Concretes.EntityFramework.Contexts
         public DbSet<Bootcamp> Bootcamps { get; set; }
         public DbSet<ApplicationState> ApplicationStates { get; set; }
         public DbSet<BootcampState> BootcampStates { get; set; }
+        public DbSet<Blacklist> Blacklists { get; set; }
 
         public BaseDbContext(DbContextOptions dbContextOptions,IConfiguration configuration) : base(dbContextOptions)
         {

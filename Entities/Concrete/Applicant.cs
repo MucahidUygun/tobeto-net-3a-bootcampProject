@@ -9,6 +9,7 @@ namespace Entities.Concrete
     public class Applicant : User
     {
         public string About { get; set; }
+        public virtual Blacklist? Blacklist { get; set; }
 
         public ICollection<Application> Applications { get; set; }
 

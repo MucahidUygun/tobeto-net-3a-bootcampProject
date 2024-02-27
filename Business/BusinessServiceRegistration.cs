@@ -19,7 +19,7 @@ namespace Business
             services.AddScoped<IApplicantService, ApplicantManager>();
             services.AddScoped<IEmployeeService, EmployeeManager>();
             services.AddScoped<IInstructorService, InstructorManager>();
-
+            services.AddScoped<IBlacklistService, BlacklistManager>();
             services.AddScoped<IApplicationService, ApplicationManager>();
             services.AddScoped<IBootcampService, BootcampManager>();
             services.AddScoped<IApplicationStateService, ApplicationStateManager>();
