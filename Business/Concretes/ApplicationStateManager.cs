@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Business.Abstract;
 using Business.Dtos.ApplicationStateDto.Request;
 using Business.Dtos.ApplicationStateDto.Response;
+using Core.Exceptions.Types;
 using DataAccess.Abstract;
 using DataAccess.Utilities.Results;
 using Entities.Concrete;
@@ -36,6 +38,7 @@ namespace Business.Concretes
 
         public async Task<IResult> DeleteAsync(DeleteApplicationStateRequest request)
         {
+            await CheckIdIsExists(request.Id);
             ApplicationState applicationState = await _repository.GetAsync(x=> x.Id == request.Id);
             await _repository.DeleteAsync(applicationState);
 
@@ -54,6 +57,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByIdApplicationStateResponse>> GetByIdApplicationStateAsync(int id)
         {
+            await CheckIdIsExists(id);
             ApplicationState applicationState = await _repository.GetAsync(x => x.Id == id);
             GetByIdApplicationStateResponse response = _mapper.Map<GetByIdApplicationStateResponse>(applicationState);
             return new SuccessDataResult<GetByIdApplicationStateResponse>(response);
@@ -61,11 +65,18 @@ namespace Business.Concretes
 
         public async Task<IDataResult<UpdateApplicationStateResponse>> UpdateAsync(UpdateApplicationStateRequest request)
         {
+            await CheckIdIsExists(request.Id);
             ApplicationState applicationState =await _repository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request,applicationState);
             await _repository.UpdateAsync(applicationState);
             UpdateApplicationStateResponse response = _mapper.Map<UpdateApplicationStateResponse>(applicationState);
             return new SuccessDataResult<UpdateApplicationStateResponse>(response, "Güncelleme işlemi başarılı");
+        }
+        private async Task CheckIdIsExists(int id)
+        {
+            var entity = await _repository.GetAsync(x => x.Id == id);
+            if (entity is null)
+                throw new BusinessException("Application State already not exists");
         }
     }
 }

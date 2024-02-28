@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Business.Abstract;
 using Business.Dtos.ApplicantDtos.Request;
 using Business.Dtos.ApplicantDtos.Response;
+using Core.Exceptions.Types;
 using DataAccess.Abstract;
+using DataAccess.Concretes.Repository;
 using DataAccess.Utilities.Results;
 using Entities.Concrete;
 using System;
@@ -32,6 +35,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByIdApplicantResponse>> GetByIdAsync(int id)
         {
+            await CheckIdIsExists(id);
             Applicant applicant = await _applicantRepository.GetAsync(x => x.Id == id);
             GetByIdApplicantResponse response = _mapper.Map<GetByIdApplicantResponse>(applicant);
             
@@ -50,6 +54,7 @@ namespace Business.Concretes
 
         public async Task<IResult> DeleteAsync(DeleteApplicantRequest request)
         {
+            await CheckIdIsExists(request.Id);
             Applicant applicant = await _applicantRepository.GetAsync(x => x.Id == request.Id);
             await _applicantRepository.DeleteAsync(applicant);
 
@@ -59,12 +64,19 @@ namespace Business.Concretes
 
         public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
         {
+            await CheckIdIsExists(request.Id);
             Applicant applicant = await _applicantRepository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request,applicant);
             await _applicantRepository.UpdateAsync(applicant);
 
             UpdateApplicantResponse response = _mapper.Map<UpdateApplicantResponse>(applicant);
             return new SuccessDataResult<UpdateApplicantResponse>(response,"Başarıyla Güncellendi");
+        }
+        private async Task CheckIdIsExists(int id)
+        {
+            var entity = await _applicantRepository.GetAsync(x => x.Id == id);
+            if (entity is null)
+                throw new BusinessException("Applicant already not exists");
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Business.Abstract;
 using Business.Dtos.EmployeeDto.Request;
 using Business.Dtos.EmployeeDto.Response;
+using Core.Exceptions.Types;
 using DataAccess.Abstract;
 using DataAccess.Utilities.Results;
 using Entities.Concrete;
@@ -33,6 +35,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByIdEmployeeResponse>> GetByIdAsync(int id)
         {
+            await CheckIdIsExists(id);
             Employee employee = await _employeeRepository.GetAsync(x => x.Id == id);
             GetByIdEmployeeResponse response = _mapper.Map<GetByIdEmployeeResponse>(employee);
 
@@ -51,21 +54,28 @@ namespace Business.Concretes
 
         public async Task<IResult> DeleteAsync(DeleteEmployeeRequest request)
         {
+            await CheckIdIsExists(request.Id);
             Employee employee = await _employeeRepository.GetAsync(x => x.Id == request.Id);
             await _employeeRepository.DeleteAsync(employee);
 
-            DeleteEmployeeResponse response = _mapper.Map<DeleteEmployeeResponse>(employee);
             return new SuccessResult("Başarıyla Silindi");
         }
 
         public async Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request)
         {
+            await CheckIdIsExists(request.Id);
             Employee employee =await _employeeRepository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request,employee);
             await _employeeRepository.UpdateAsync(employee);
 
             UpdateEmployeeResponse response = _mapper.Map<UpdateEmployeeResponse>(employee);
             return new SuccessDataResult<UpdateEmployeeResponse>(response,"Başarıyla Güncellendi.");
+        }
+        private async Task CheckIdIsExists(int id)
+        {
+            var entity = await _employeeRepository.GetAsync(x=>x.Id==id);
+            if (entity is null)
+                throw new BusinessException("Employee already not exists");
         }
     }
 }

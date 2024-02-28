@@ -17,5 +17,6 @@ namespace Business.Abstract
         Task<IResult> DeleteAsync(DeleteBlacklistRequest request);
         Task<IDataResult<List<GetAllBlacklistResponse>>> GetAllAsync();
         Task<IDataResult<GetByIdBlacklistResponse>> GetByIdBlacklistAsync(int  id);
+        Task<IDataResult<GetByApplicantIdResponse>> GetByApplicantIdAsync(int id);
     }
 }

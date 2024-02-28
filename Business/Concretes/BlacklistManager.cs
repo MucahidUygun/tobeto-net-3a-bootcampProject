@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Business.Abstract;
 using Business.Dtos.ApplicantDtos.Request;
 using Business.Dtos.ApplicantDtos.Response;
 using Business.Dtos.Blacklists.Requests;
 using Business.Dtos.Blacklists.Responses;
+using Core.Exceptions.Types;
 using DataAccess.Abstract;
 using DataAccess.Utilities.Results;
 using Entities.Concrete;
@@ -37,6 +39,7 @@ namespace Business.Concretes
 
         public async Task<IResult> DeleteAsync(DeleteBlacklistRequest request)
         {
+            await CheckIdIsExists(request.Id);
             Blacklist blacklist = await _repository.GetAsync(x=>x.Id == request.Id);
             await _repository.DeleteAsync(blacklist);
             return new SuccessResult("Başarıyla Silindi");
@@ -49,8 +52,17 @@ namespace Business.Concretes
             return new SuccessDataResult<List<GetAllBlacklistResponse>>(responses,"Başarıyla Listelendi.");
         }
 
+        public async Task<IDataResult<GetByApplicantIdResponse>> GetByApplicantIdAsync(int id)
+        {
+            Blacklist blacklist = await _repository.GetAsync(x => x.ApplicantId == id, include: x => x.Include(x => x.Applicant));
+            GetByApplicantIdResponse response = _mapper.Map<GetByApplicantIdResponse>(blacklist);
+
+            return new SuccessDataResult<GetByApplicantIdResponse>(response, "Başarıyla listelendi");
+        }
+
         public async Task<IDataResult<GetByIdBlacklistResponse>> GetByIdBlacklistAsync(int id)
         {
+            await CheckIdIsExists(id);
             Blacklist blacklist = await _repository.GetAsync(x => x.Id == id, include: x => x.Include(x => x.Applicant));
             GetByIdBlacklistResponse responses = _mapper.Map<GetByIdBlacklistResponse>(blacklist);
 
@@ -59,12 +71,19 @@ namespace Business.Concretes
 
         public async Task<IDataResult<UpdatedBlacklistResponse>> UpdateAsync(UpdateBlacklistRequest request)
         {
+            await CheckIdIsExists(request.Id);
             Blacklist blacklist = await _repository.GetAsync(x=>x.Id==request.Id);
             _mapper.Map(request,blacklist);
             await _repository.UpdateAsync(blacklist);
             UpdatedBlacklistResponse response = _mapper.Map<UpdatedBlacklistResponse>(blacklist);
 
             return new SuccessDataResult<UpdatedBlacklistResponse>(response);
+        }
+        private async Task CheckIdIsExists(int id)
+        {
+            var entity = await _repository.GetAsync(x => x.Id == id);
+            if (entity is null)
+                throw new BusinessException("Blacklist already not exists");
         }
     }
 }

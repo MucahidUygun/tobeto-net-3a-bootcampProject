@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Business.Abstract;
 using Business.Dtos.ApplicantDtos.Request;
 using Business.Dtos.BootcampDto.Request;
 using Business.Dtos.BootcampDto.Response;
+using Core.Exceptions.Types;
 using DataAccess.Abstract;
 using DataAccess.Utilities.Results;
 using Entities.Concrete;
@@ -36,6 +38,7 @@ namespace Business.Concretes
 
         public async Task<IResult> DeleteAsync(DeleteBootcampRequest request)
         {
+            await CheckIdIsExists(request.Id);
             Bootcamp bootcamp = _mapper.Map<Bootcamp>(request);
             await _repository.DeleteAsync(bootcamp);
             DeleteBootcampResponse response = _mapper.Map<DeleteBootcampResponse>(bootcamp);
@@ -51,6 +54,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByIdBootcampResponse>> GetByIdAsync(int id)
         {
+            await CheckIdIsExists(id);
             Bootcamp bootcamp = await _repository.GetAsync(x=>x.Id == id, include: x => x.Include(x => x.Instructor).Include(x => x.BootcampState));
             GetByIdBootcampResponse response = _mapper.Map<GetByIdBootcampResponse>(bootcamp);
             return new SuccessDataResult<GetByIdBootcampResponse>(response, "Listelendi");
@@ -58,11 +62,18 @@ namespace Business.Concretes
 
         public async Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootcampRequest request)
         {
+            await CheckIdIsExists(request.Id);
             Bootcamp bootcamp = await _repository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request,bootcamp);
             await _repository.UpdateAsync(bootcamp);
             UpdateBootcampResponse response = _mapper.Map<UpdateBootcampResponse>(bootcamp);
             return new SuccessDataResult<UpdateBootcampResponse>(response,"Güncellendi.");
+        }
+        private async Task CheckIdIsExists(int id)
+        {
+            var entity = await _repository.GetAsync(x => x.Id == id);
+            if (entity is null)
+                throw new BusinessException("Bootcamp already not exists");
         }
     }
 }

@@ -10,6 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Exceptions.Types;
+using DataAccess.Concretes.Repository;
+using Azure.Core;
 
 namespace Business.Concretes
 {
@@ -31,6 +34,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByIdInstructorResponse>> GetByIdAsync(int id)
         {
+            await CheckIdIsExists(id);
             Instructor instructor = await _instructorRepository.GetAsync(x => x.Id == id);
             GetByIdInstructorResponse response = _mapper.Map<GetByIdInstructorResponse>(instructor);
             return new SuccessDataResult<GetByIdInstructorResponse>(response, "Başarıyla Id'ye göre listelendi");
@@ -47,6 +51,7 @@ namespace Business.Concretes
 
         public async Task<IResult> DeleteAsync(DeleteInstructorRequest request)
         {
+            await CheckIdIsExists(request.Id);
             Instructor instructor = await _instructorRepository.GetAsync(x => x.Id == request.Id);
             await _instructorRepository.DeleteAsync(instructor);
 
@@ -56,11 +61,18 @@ namespace Business.Concretes
 
         public async Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
         {
+            await CheckIdIsExists(request.Id);
             Instructor instructor = await _instructorRepository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request,instructor);
 
             UpdateInstructorResponse response = _mapper.Map<UpdateInstructorResponse>(instructor);
             return new SuccessDataResult<UpdateInstructorResponse>(response,"Başarıyla Güncellendi.");
+        }
+        private async Task CheckIdIsExists(int id)
+        {
+            var entity = await _instructorRepository.GetAsync(x => x.Id == id);
+            if (entity is null)
+                throw new BusinessException("Instructor already not exists");
         }
     }
 }
