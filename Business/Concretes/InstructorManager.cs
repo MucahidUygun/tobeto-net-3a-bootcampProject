@@ -65,6 +65,7 @@ namespace Business.Concretes
             Instructor instructor = await _instructorRepository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request,instructor);
 
+            await _instructorRepository.UpdateAsync(instructor);
             UpdateInstructorResponse response = _mapper.Map<UpdateInstructorResponse>(instructor);
             return new SuccessDataResult<UpdateInstructorResponse>(response,"Başarıyla Güncellendi.");
         }
