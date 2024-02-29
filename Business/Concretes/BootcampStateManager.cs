@@ -70,7 +70,7 @@ namespace Business.Concretes
             UpdateBootcampStateResponse response = _mapper.Map<UpdateBootcampStateResponse>(bootcampState);
             return new SuccessDataResult<UpdateBootcampStateResponse>(response, "Güncelleme başarılı");
         }
-        private async Task CheckIdIsExists(int id)
+        public async Task CheckIdIsExists(int id)
         {
             var entity = await _repository.GetAsync(x => x.Id == id);
             if (entity is null)

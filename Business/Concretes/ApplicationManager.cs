@@ -23,17 +23,22 @@ namespace Business.Concretes
         private readonly IApplicationRepository _repository;
         private readonly IMapper _mapper;
         private readonly IBlacklistService _blacklistService;
+        private readonly IBootcampService _bootcampService;
+        private readonly IBootcampStateService _bootcampStateService;
 
-        public ApplicationManager(IMapper mapper, IApplicationRepository repository, IBlacklistService blacklistService)
+        public ApplicationManager(IMapper mapper, IApplicationRepository repository, IBlacklistService blacklistService, IBootcampService bootcampService)
         {
             _mapper = mapper;
             _repository = repository;
             _blacklistService = blacklistService;
+            _bootcampService = bootcampService;
         }
 
         public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
         {
             await CheckIfApplicantIsBlacklist(request.ApplicantId);
+            await CheckIfBootcampIdExists(request.BootcampId);
+            await CheckIfBootcampStateExitst(request.ApplicationStateId);
             Application application = _mapper.Map<Application>(request);
             await _repository.AddAsync(application);
 
@@ -71,6 +76,8 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
         {
             await CheckIdIsExists(request.Id);
+            await CheckIfBootcampIdExists(request.BootcampId);
+            await CheckIfBootcampStateExitst(request.ApplicationStateId);
             Application application = await _repository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request,application);
             await _repository.UpdateAsync(application);
@@ -92,6 +99,16 @@ namespace Business.Concretes
             if (entity.Data != null)
                 throw new BusinessException("Applicant is in Blacklist");
            
+        }
+
+        private async Task CheckIfBootcampIdExists(int id)
+        {
+            await _bootcampService.CheckIdIsExists(id);
+        }
+
+        private async Task CheckIfBootcampStateExitst(int id)
+        {
+            await _bootcampStateService.CheckIdIsExists(id);
         }
     }
 }

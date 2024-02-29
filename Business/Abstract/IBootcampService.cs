@@ -20,5 +20,7 @@ namespace Business.Abstract
         Task<IDataResult<CreateBootcampResponse>> CreateAsync(CreateBootcampRequest request);
         Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootcampRequest request);
         Task<IResult> DeleteAsync(DeleteBootcampRequest request);
+
+        Task CheckIdIsExists (int id);
     }
 }

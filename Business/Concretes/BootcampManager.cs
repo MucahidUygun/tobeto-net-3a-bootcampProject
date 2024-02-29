@@ -21,6 +21,7 @@ namespace Business.Concretes
     {
         private readonly IBootcampRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IInstructorService _instructorService;
 
         public BootcampManager(IBootcampRepository repository,IMapper mapper)
         {
@@ -30,6 +31,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<CreateBootcampResponse>> CreateAsync(CreateBootcampRequest request)
         {
+            await CheckInstructorIdIsExits(request.InstructorId);
             Bootcamp bootcamp = _mapper.Map<Bootcamp>(request);
             await _repository.AddAsync(bootcamp);
             CreateBootcampResponse response = _mapper.Map<CreateBootcampResponse>(bootcamp);
@@ -63,17 +65,23 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootcampRequest request)
         {
             await CheckIdIsExists(request.Id);
+            await CheckInstructorIdIsExits(request.InstructorId);
             Bootcamp bootcamp = await _repository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request,bootcamp);
             await _repository.UpdateAsync(bootcamp);
             UpdateBootcampResponse response = _mapper.Map<UpdateBootcampResponse>(bootcamp);
             return new SuccessDataResult<UpdateBootcampResponse>(response,"Güncellendi.");
         }
-        private async Task CheckIdIsExists(int id)
+        public async Task CheckIdIsExists(int id)
         {
             var entity = await _repository.GetAsync(x => x.Id == id);
             if (entity is null)
                 throw new BusinessException("Bootcamp already not exists");
+        }
+
+        public async Task CheckInstructorIdIsExits(int id)
+        {
+            await _instructorService.CheckIdIsExists(id);
         }
     }
 }

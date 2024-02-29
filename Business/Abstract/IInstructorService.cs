@@ -17,6 +17,8 @@ namespace Business.Abstract
         Task<IResult> DeleteAsync(DeleteInstructorRequest request);
         Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request);
 
+        Task CheckIdIsExists(int id);
+
         //List<GetAllInstructorResponse> GetAll();
         //GetByIdInstructorResponse GetById(int id);
         //CreateInstructorResponse Add(CreateInstructorRequest request);

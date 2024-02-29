@@ -69,7 +69,7 @@ namespace Business.Concretes
             UpdateInstructorResponse response = _mapper.Map<UpdateInstructorResponse>(instructor);
             return new SuccessDataResult<UpdateInstructorResponse>(response,"Başarıyla Güncellendi.");
         }
-        private async Task CheckIdIsExists(int id)
+        public async Task CheckIdIsExists(int id)
         {
             var entity = await _instructorRepository.GetAsync(x => x.Id == id);
             if (entity is null)
