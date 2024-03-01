@@ -5,6 +5,7 @@ using Business.Dtos.BootcampDto.Request;
 using Business.Dtos.BootcampDto.Response;
 using Business.Dtos.BootcampStateDto.Request;
 using Business.Dtos.BootcampStateDto.Response;
+using Business.Rules;
 using Core.Exceptions.Types;
 using DataAccess.Abstract;
 using DataAccess.Utilities.Results;
@@ -20,10 +21,12 @@ namespace Business.Concretes
     public class BootcampStateManager: IBootcampStateService
     {
         private readonly IBootcampStateRepository _repository;
+        private readonly BootcampBusinessRules _rules;
         private readonly IMapper _mapper;
 
-        public BootcampStateManager(IBootcampStateRepository repository,IMapper mapper)
+        public BootcampStateManager(IBootcampStateRepository repository,IMapper mapper, BootcampBusinessRules rules)
         {
+            _rules = rules;
             _mapper = mapper;
             _repository = repository;
         }
@@ -38,7 +41,7 @@ namespace Business.Concretes
 
         public async Task<IResult> DeleteAsync(DeleteBootcampStateRequest request)
         {
-            await CheckIdIsExists(request.Id);
+            await _rules.CheckIdIsExists(request.Id);
             BootcampState bootcampState = _mapper.Map<BootcampState>(request);
             await _repository.DeleteAsync(bootcampState);
             DeleteBootcampStateResponse response = _mapper.Map<DeleteBootcampStateResponse>(bootcampState);
@@ -54,7 +57,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByIdBootcampStateResponse>> GetByIdAsync(int id)
         {
-            await CheckIdIsExists(id);
+            await _rules.CheckIdIsExists(id);
             BootcampState bootcampState = await _repository.GetAsync(x=> x.Id == id);
             GetByIdBootcampStateResponse response = _mapper.Map<GetByIdBootcampStateResponse>(bootcampState);
             return new SuccessDataResult<GetByIdBootcampStateResponse>(response,"Id' ye göre listeleme başarılı");
@@ -62,7 +65,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<UpdateBootcampStateResponse>> UpdateAsync(UpdateBootcampStateRequest request)
         {
-            await CheckIdIsExists(request.Id);
+            await _rules.CheckIdIsExists(request.Id);
             BootcampState bootcampState =await _repository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request,bootcampState);
             await _repository.UpdateAsync(bootcampState);
@@ -72,9 +75,8 @@ namespace Business.Concretes
         }
         public async Task CheckIdIsExists(int id)
         {
-            var entity = await _repository.GetAsync(x => x.Id == id);
-            if (entity is null)
-                throw new BusinessException("Bootcamp State already not exists");
+            await _rules.CheckIdIsExists(id);
         }
+
     }
 }

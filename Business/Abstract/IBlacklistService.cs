@@ -18,5 +18,7 @@ namespace Business.Abstract
         Task<IDataResult<List<GetAllBlacklistResponse>>> GetAllAsync();
         Task<IDataResult<GetByIdBlacklistResponse>> GetByIdBlacklistAsync(int  id);
         Task<IDataResult<GetByApplicantIdResponse>> GetByApplicantIdAsync(int id);
+
+        Task CheckIdIsExists(int id);
     }
 }

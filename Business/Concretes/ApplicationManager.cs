@@ -3,6 +3,7 @@ using Azure.Core;
 using Business.Abstract;
 using Business.Dtos.ApplicationDto.Request;
 using Business.Dtos.ApplicationDto.Response;
+using Business.Rules;
 using Core.DataAccess;
 using Core.Exceptions.Types;
 using DataAccess.Abstract;
@@ -22,23 +23,21 @@ namespace Business.Concretes
     {
         private readonly IApplicationRepository _repository;
         private readonly IMapper _mapper;
-        private readonly IBlacklistService _blacklistService;
-        private readonly IBootcampService _bootcampService;
-        private readonly IBootcampStateService _bootcampStateService;
+        private readonly ApplicationBusinessRules _rules;
 
-        public ApplicationManager(IMapper mapper, IApplicationRepository repository, IBlacklistService blacklistService, IBootcampService bootcampService)
+        public ApplicationManager
+            (IMapper mapper, IApplicationRepository repository, ApplicationBusinessRules rules)
         {
+            _rules = rules;
             _mapper = mapper;
             _repository = repository;
-            _blacklistService = blacklistService;
-            _bootcampService = bootcampService;
         }
 
         public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
         {
-            await CheckIfApplicantIsBlacklist(request.ApplicantId);
-            await CheckIfBootcampIdExists(request.BootcampId);
-            await CheckIfBootcampStateExitst(request.ApplicationStateId);
+            await _rules.CheckIfApplicantIsBlacklist(request.ApplicantId);
+            await _rules.CheckIfBootcampIdExists(request.BootcampId);
+            await _rules.CheckIfBootcampStateExitst(request.ApplicationStateId);
             Application application = _mapper.Map<Application>(request);
             await _repository.AddAsync(application);
 
@@ -48,7 +47,7 @@ namespace Business.Concretes
 
         public async Task<IResult> DeleteAsync(DeleteApplicationRequest request)
         {
-            await CheckIdIsExists(request.Id);
+            await _rules.CheckIdIsExists(request.Id);
             Application application = await _repository.GetAsync(x => x.Id == request.Id);
             await _repository.DeleteAsync(application);
             DeleteApplicationResponse response = _mapper.Map<DeleteApplicationResponse>(application);
@@ -65,7 +64,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByIdApplicationResponse>> GetByIdAsync(int id)
         {
-            await CheckIdIsExists(id);
+            await _rules.CheckIdIsExists(id);
             Application application = await _repository.GetAsync
                 (x => x.Id == id, include: x => x.Include(x => x.Applicant).Include(x => x.Bootcamp).Include(x => x.ApplicationState));
             GetByIdApplicationResponse response = _mapper.Map<GetByIdApplicationResponse>(application);
@@ -75,40 +74,15 @@ namespace Business.Concretes
 
         public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
         {
-            await CheckIdIsExists(request.Id);
-            await CheckIfBootcampIdExists(request.BootcampId);
-            await CheckIfBootcampStateExitst(request.ApplicationStateId);
+            await _rules.CheckIdIsExists(request.Id);
+            await _rules.CheckIfBootcampIdExists(request.BootcampId);
+            await _rules.CheckIfBootcampStateExitst(request.ApplicationStateId);
             Application application = await _repository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request,application);
             await _repository.UpdateAsync(application);
 
             UpdateApplicationResponse response = _mapper.Map<UpdateApplicationResponse>(application);
             return new SuccessDataResult<UpdateApplicationResponse>(response, "Güncelleme başarılı");
-        }
-
-        private async Task CheckIdIsExists(int id)
-        {
-            var entity = await _repository.GetAsync(x => x.Id == id);
-            if (entity is null)
-                throw new BusinessException("Application already not exists");
-        }
-
-        private async Task CheckIfApplicantIsBlacklist(int applicantId)
-        {
-            var entity = await _blacklistService.GetByApplicantIdAsync(applicantId);
-            if (entity.Data != null)
-                throw new BusinessException("Applicant is in Blacklist");
-           
-        }
-
-        private async Task CheckIfBootcampIdExists(int id)
-        {
-            await _bootcampService.CheckIdIsExists(id);
-        }
-
-        private async Task CheckIfBootcampStateExitst(int id)
-        {
-            await _bootcampStateService.CheckIdIsExists(id);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Business.Abstract;
 using Business.Dtos.User.Request;
 using Business.Dtos.User.Response;
+using Business.Rules;
 using DataAccess.Abstract;
 using DataAccess.Utilities.Results;
 using Entities.Concrete;
@@ -16,10 +17,12 @@ namespace Business.Concretes
     public class UserManager : IUserService
     {
         protected readonly IUserRepository _userRepository;
+        private readonly UserBusinessRules _rules;
         protected readonly IMapper _mapper;
 
-        public UserManager(IUserRepository userRepository,IMapper mapper)
+        public UserManager(IUserRepository userRepository,IMapper mapper,UserBusinessRules rules)
         {
+            _rules = rules;
             _userRepository = userRepository;
             _mapper = mapper;
         }
@@ -34,6 +37,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByIdResponse>> GetByIdAsync(int id)
         {
+            await _rules.CheckIdIsExists(id);
             User user = await _userRepository.GetAsync(x => x.Id == id);
             GetByIdResponse response = _mapper.Map<GetByIdResponse>(user);
             return new SuccessDataResult<GetByIdResponse>(response,"Başarıyla Eklendi.");

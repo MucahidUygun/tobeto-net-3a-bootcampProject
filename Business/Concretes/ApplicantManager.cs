@@ -3,6 +3,7 @@ using Azure.Core;
 using Business.Abstract;
 using Business.Dtos.ApplicantDtos.Request;
 using Business.Dtos.ApplicantDtos.Response;
+using Business.Rules;
 using Core.Exceptions.Types;
 using DataAccess.Abstract;
 using DataAccess.Concretes.Repository;
@@ -19,9 +20,14 @@ namespace Business.Concretes
     public class ApplicantManager : IApplicantService
     {
         private readonly IApplicantRepository _applicantRepository;
+        private readonly ApplicantBusinessRules _rules;
+
+       
+
         private readonly IMapper _mapper;
-        public ApplicantManager(IApplicantRepository applicantRepository,IMapper mapper)
+        public ApplicantManager(IApplicantRepository applicantRepository,IMapper mapper,ApplicantBusinessRules rules)
         {
+            _rules = rules;
             _applicantRepository = applicantRepository;
             _mapper = mapper;
         }
@@ -35,7 +41,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByIdApplicantResponse>> GetByIdAsync(int id)
         {
-            await CheckIdIsExists(id);
+            await _rules.CheckIdIsExists(id);
             Applicant applicant = await _applicantRepository.GetAsync(x => x.Id == id);
             GetByIdApplicantResponse response = _mapper.Map<GetByIdApplicantResponse>(applicant);
             
@@ -54,7 +60,7 @@ namespace Business.Concretes
 
         public async Task<IResult> DeleteAsync(DeleteApplicantRequest request)
         {
-            await CheckIdIsExists(request.Id);
+            await _rules.CheckIdIsExists(request.Id);
             Applicant applicant = await _applicantRepository.GetAsync(x => x.Id == request.Id);
             await _applicantRepository.DeleteAsync(applicant);
 
@@ -64,7 +70,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
         {
-            await CheckIdIsExists(request.Id);
+            await _rules.CheckIdIsExists(request.Id);
             Applicant applicant = await _applicantRepository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request,applicant);
             await _applicantRepository.UpdateAsync(applicant);
@@ -72,11 +78,6 @@ namespace Business.Concretes
             UpdateApplicantResponse response = _mapper.Map<UpdateApplicantResponse>(applicant);
             return new SuccessDataResult<UpdateApplicantResponse>(response,"Başarıyla Güncellendi");
         }
-        private async Task CheckIdIsExists(int id)
-        {
-            var entity = await _applicantRepository.GetAsync(x => x.Id == id);
-            if (entity is null)
-                throw new BusinessException("Applicant already not exists");
-        }
+        
     }
 }
