@@ -16,15 +16,6 @@ namespace Business
         public static IServiceCollection AddBusinessServices(this IServiceCollection services) 
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            //services.AddScoped<IUserService, UserManager>();
-            //services.AddScoped<IApplicantService, ApplicantManager>();
-            //services.AddScoped<IEmployeeService, EmployeeManager>();
-            //services.AddScoped<IInstructorService, InstructorManager>();
-            //services.AddScoped<IBlacklistService, BlacklistManager>();
-            //services.AddScoped<IApplicationService, ApplicationManager>();
-            //services.AddScoped<IBootcampService, BootcampManager>();
-            //services.AddScoped<IApplicationStateService, ApplicationStateManager>();
-            //services.AddScoped<IBootcampStateService, BootcampStateManager>();
             services.AddSubClassesOfType(Assembly.GetExecutingAssembly(),typeof(BaseBusinessRules));
 
             services.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t=>t.ServiceType.Name.EndsWith("Manager"));

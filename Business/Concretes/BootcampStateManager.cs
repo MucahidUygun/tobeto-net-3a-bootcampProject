@@ -21,10 +21,10 @@ namespace Business.Concretes
     public class BootcampStateManager: IBootcampStateService
     {
         private readonly IBootcampStateRepository _repository;
-        private readonly BootcampBusinessRules _rules;
+        private readonly BootcampStateBusinessRules _rules;
         private readonly IMapper _mapper;
 
-        public BootcampStateManager(IBootcampStateRepository repository,IMapper mapper, BootcampBusinessRules rules)
+        public BootcampStateManager(IBootcampStateRepository repository,IMapper mapper, BootcampStateBusinessRules rules)
         {
             _rules = rules;
             _mapper = mapper;

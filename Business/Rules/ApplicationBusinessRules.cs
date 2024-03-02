@@ -12,18 +12,20 @@ namespace Business.Rules
 {
     public class ApplicationBusinessRules : BaseBusinessRules
     {
-        private readonly IApplicantRepository _repository;
+        private readonly IApplicationRepository _repository;
         private readonly IBlacklistService _blacklistService;
         private readonly IBootcampService _bootcampService;
         private readonly IBootcampStateService _bootcampStateService;
+        private readonly IApplicantService _applicantService;
 
         public ApplicationBusinessRules
-            (IApplicantRepository repository, IBlacklistService blacklistService, IBootcampService bootcampService, IBootcampStateService bootcampStateService)
+            (IApplicationRepository repository, IBlacklistService blacklistService, IBootcampService bootcampService, IBootcampStateService bootcampStateService, IApplicantService applicantService)
         {
             _repository = repository;
             _blacklistService = blacklistService;
             _bootcampService = bootcampService;
             _bootcampStateService = bootcampStateService;
+            _applicantService = applicantService;
         }
         public async Task CheckIdIsExists(int id)
         {
@@ -38,6 +40,11 @@ namespace Business.Rules
             if (entity.Data != null)
                 throw new BusinessException("Applicant is in Blacklist");
 
+        }
+
+        public async Task CheckIfApplicantIdIsExists(int id)
+        {
+            await _applicantService.CheckIdIsExists(id);
         }
 
         public async Task CheckIfBootcampIdExists(int id)

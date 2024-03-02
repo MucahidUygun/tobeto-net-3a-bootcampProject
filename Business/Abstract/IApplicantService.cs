@@ -17,6 +17,8 @@ namespace Business.Abstract
         Task<IResult> DeleteAsync(DeleteApplicantRequest request);
         Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request);
 
+        Task CheckIdIsExists(int id);
+
         //List<GetAllApplicantResponse> GetAll();
         //GetByIdApplicantResponse GetById(int id);
         //CreateApplicantResponse Add(CreateApplicantRequest request);

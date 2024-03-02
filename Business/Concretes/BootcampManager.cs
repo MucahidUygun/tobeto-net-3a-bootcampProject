@@ -34,6 +34,7 @@ namespace Business.Concretes
         public async Task<IDataResult<CreateBootcampResponse>> CreateAsync(CreateBootcampRequest request)
         {
             await _rules.CheckInstructorIdIsExits(request.InstructorId);
+            await _rules.CheckBootcampStateIdIsExists(request.BootcampStateId);
             Bootcamp bootcamp = _mapper.Map<Bootcamp>(request);
             await _repository.AddAsync(bootcamp);
             CreateBootcampResponse response = _mapper.Map<CreateBootcampResponse>(bootcamp);
@@ -68,6 +69,7 @@ namespace Business.Concretes
         {
             await _rules.CheckIdIsExists(request.Id);
             await _rules.CheckInstructorIdIsExits(request.InstructorId);
+            await _rules.CheckBootcampStateIdIsExists(request.BootcampStateId);
             Bootcamp bootcamp = await _repository.GetAsync(x => x.Id == request.Id);
             _mapper.Map(request, bootcamp);
             await _repository.UpdateAsync(bootcamp);

@@ -22,18 +22,6 @@ namespace DataAccess
                 options => options.UseSqlServer(
                     configuration.GetConnectionString("TobetoDotNet3AConnectionString")));
 
-            //services.AddScoped<IUserRepository, UserRepository>();
-            //services.AddScoped<IApplicantRepository,ApplicantRepository>();
-            //services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-            //services.AddScoped<IInstructorRepository, InstructorRepository>();
-
-            //services.AddScoped<IApplicationRepository, ApplicationRepository>();
-            //services.AddScoped<IApplicationStateRepository, ApplicationStateRepository>();
-            //services.AddScoped<IBootcampRepository, BootcampRepository>();
-            //services.AddScoped<IBootcampStateRepository, BootcampStateRepository>();
-
-            //services.AddScoped<IBlacklistRepository, BlacklistRepository>();
-
 
             services.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.ServiceType.Name.EndsWith("Repository"));
 

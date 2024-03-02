@@ -1,4 +1,5 @@
-﻿using Core.CrossCuttingConcerns;
+﻿using Business.Abstract;
+using Core.CrossCuttingConcerns;
 using Core.Exceptions.Types;
 using DataAccess.Abstract;
 using System;
@@ -12,16 +13,22 @@ namespace Business.Rules
     public class BlacklistBusinessRules : BaseBusinessRules
     {
         private readonly IBlacklistRepository _repository;
+        private readonly IApplicantService _applicantService;
 
-        public BlacklistBusinessRules(IBlacklistRepository repository)
+        public BlacklistBusinessRules(IBlacklistRepository repository, IApplicantService service)
         {
             _repository = repository;
+            _applicantService = service;
         }
         public async Task CheckIdIsExists(int id)
         {
             var entity = await _repository.GetAsync(x => x.Id == id);
             if (entity is null)
                 throw new BusinessException("Blacklist already not exists");
+        }
+        public async Task CheckApplicantIdIsExists(int id)
+        {
+            await _applicantService.CheckIdIsExists(id);
         }
     }
 }

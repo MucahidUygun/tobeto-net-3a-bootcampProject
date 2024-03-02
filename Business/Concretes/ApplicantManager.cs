@@ -21,9 +21,6 @@ namespace Business.Concretes
     {
         private readonly IApplicantRepository _applicantRepository;
         private readonly ApplicantBusinessRules _rules;
-
-       
-
         private readonly IMapper _mapper;
         public ApplicantManager(IApplicantRepository applicantRepository,IMapper mapper,ApplicantBusinessRules rules)
         {
@@ -78,6 +75,11 @@ namespace Business.Concretes
             UpdateApplicantResponse response = _mapper.Map<UpdateApplicantResponse>(applicant);
             return new SuccessDataResult<UpdateApplicantResponse>(response,"Başarıyla Güncellendi");
         }
-        
+
+        public async Task CheckIdIsExists(int id)
+        {
+            await _rules.CheckIdIsExists(id);
+        }
+
     }
 }

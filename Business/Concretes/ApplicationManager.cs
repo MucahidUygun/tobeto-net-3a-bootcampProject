@@ -35,6 +35,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
         {
+            await _rules.CheckIfApplicantIdIsExists(request.ApplicantId);
             await _rules.CheckIfApplicantIsBlacklist(request.ApplicantId);
             await _rules.CheckIfBootcampIdExists(request.BootcampId);
             await _rules.CheckIfBootcampStateExitst(request.ApplicationStateId);
@@ -75,6 +76,8 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
         {
             await _rules.CheckIdIsExists(request.Id);
+            await _rules.CheckIfApplicantIdIsExists(request.ApplicantId);
+            await _rules.CheckIfApplicantIsBlacklist(request.ApplicantId);
             await _rules.CheckIfBootcampIdExists(request.BootcampId);
             await _rules.CheckIfBootcampStateExitst(request.ApplicationStateId);
             Application application = await _repository.GetAsync(x => x.Id == request.Id);
@@ -84,5 +87,6 @@ namespace Business.Concretes
             UpdateApplicationResponse response = _mapper.Map<UpdateApplicationResponse>(application);
             return new SuccessDataResult<UpdateApplicationResponse>(response, "Güncelleme başarılı");
         }
+
     }
 }

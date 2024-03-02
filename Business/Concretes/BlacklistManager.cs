@@ -34,6 +34,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<CreatedBlacklistResponse>> AddAsync(CreateBlacklistRequest request)
         {
+            await _rules.CheckApplicantIdIsExists(request.ApplicantId);
             Blacklist blacklist = _mapper.Map<Blacklist>(request);
             await _repository.AddAsync(blacklist);
             CreatedBlacklistResponse response = _mapper.Map<CreatedBlacklistResponse>(blacklist);
@@ -57,6 +58,7 @@ namespace Business.Concretes
 
         public async Task<IDataResult<GetByApplicantIdResponse>> GetByApplicantIdAsync(int id)
         {
+            await _rules.CheckApplicantIdIsExists(id);
             Blacklist blacklist = await _repository.GetAsync(x => x.ApplicantId == id, include: x => x.Include(x => x.Applicant));
             GetByApplicantIdResponse response = _mapper.Map<GetByApplicantIdResponse>(blacklist);
 
@@ -75,6 +77,7 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdatedBlacklistResponse>> UpdateAsync(UpdateBlacklistRequest request)
         {
             await _rules.CheckIdIsExists(request.Id);
+            await _rules.CheckApplicantIdIsExists(request.ApplicantId);
             Blacklist blacklist = await _repository.GetAsync(x=>x.Id==request.Id);
             _mapper.Map(request,blacklist);
             await _repository.UpdateAsync(blacklist);

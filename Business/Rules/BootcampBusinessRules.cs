@@ -15,17 +15,24 @@ namespace Business.Rules
     {
         private readonly IBootcampRepository _repository;
         private readonly IInstructorService _instructorService;
+        private readonly IBootcampStateService _bootcampStateService;
 
-        public BootcampBusinessRules(IBootcampRepository repository, IInstructorService instructorService)
+        public BootcampBusinessRules(IBootcampRepository repository, IInstructorService instructorService, IBootcampStateService bootcampStateService)
         {
             _repository = repository;
             _instructorService = instructorService;
+            _bootcampStateService = bootcampStateService;
         }
         public async Task CheckIdIsExists(int id)
         {
             var entity = await _repository.GetAsync(x => x.Id == id);
             if (entity is null)
                 throw new BusinessException("Bootcamp already not exists");
+        }
+
+        public async Task CheckBootcampStateIdIsExists(int id)
+        {
+            await _bootcampStateService.CheckIdIsExists(id);
         }
 
         public async Task CheckInstructorIdIsExits(int id)
