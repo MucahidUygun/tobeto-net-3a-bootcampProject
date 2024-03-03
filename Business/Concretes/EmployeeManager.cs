@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure.Core;
 using Business.Abstract;
+using Business.Constants.Messages;
 using Business.Dtos.EmployeeDto.Request;
 using Business.Dtos.EmployeeDto.Response;
 using Business.Rules;
@@ -33,7 +34,7 @@ namespace Business.Concretes
         {
             List<GetAllEmployeeResponse> employees = _mapper.Map<List<GetAllEmployeeResponse>>(await _employeeRepository.GetAllAsync());
                 
-            return new SuccessDataResult<List<GetAllEmployeeResponse>>(employees,"Başarıyla Listelendi");
+            return new SuccessDataResult<List<GetAllEmployeeResponse>>(employees, EmployeeMessages.GetAllListed);
         }
 
         public async Task<IDataResult<GetByIdEmployeeResponse>> GetByIdAsync(int id)
@@ -42,7 +43,7 @@ namespace Business.Concretes
             Employee employee = await _employeeRepository.GetAsync(x => x.Id == id);
             GetByIdEmployeeResponse response = _mapper.Map<GetByIdEmployeeResponse>(employee);
 
-            return new SuccessDataResult<GetByIdEmployeeResponse>(response,"Başarıyla listelendi");
+            return new SuccessDataResult<GetByIdEmployeeResponse>(response, EmployeeMessages.GetByIdListed);
         }
 
         public async Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request)
@@ -52,7 +53,7 @@ namespace Business.Concretes
 
             CreateEmployeeResponse response = _mapper.Map<CreateEmployeeResponse>(employee);
 
-            return new SuccessDataResult<CreateEmployeeResponse>(response,"Başarıyla Eklendi");
+            return new SuccessDataResult<CreateEmployeeResponse>(response, EmployeeMessages.Added);
         }
 
         public async Task<IResult> DeleteAsync(DeleteEmployeeRequest request)
@@ -61,7 +62,7 @@ namespace Business.Concretes
             Employee employee = await _employeeRepository.GetAsync(x => x.Id == request.Id);
             await _employeeRepository.DeleteAsync(employee);
 
-            return new SuccessResult("Başarıyla Silindi");
+            return new SuccessResult(EmployeeMessages.Deleted);
         }
 
         public async Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request)
@@ -72,7 +73,7 @@ namespace Business.Concretes
             await _employeeRepository.UpdateAsync(employee);
 
             UpdateEmployeeResponse response = _mapper.Map<UpdateEmployeeResponse>(employee);
-            return new SuccessDataResult<UpdateEmployeeResponse>(response,"Başarıyla Güncellendi.");
+            return new SuccessDataResult<UpdateEmployeeResponse>(response, EmployeeMessages.Updated);
         }
         
     }

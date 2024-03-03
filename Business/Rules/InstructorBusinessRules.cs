@@ -1,7 +1,9 @@
-﻿using Core.CrossCuttingConcerns;
+﻿using Business.Constants.Messages;
+using Core.CrossCuttingConcerns;
 using Core.Exceptions.Types;
 using DataAccess.Abstract;
 using DataAccess.Concretes.Repository;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +24,7 @@ namespace Business.Rules
         {
             var entity = await _repository.GetAsync(x => x.Id == id);
             if (entity is null)
-                throw new BusinessException("Instructor already not exists");
+                throw new BusinessException(InstructorMessages.NotExists);
         }
     }
 }

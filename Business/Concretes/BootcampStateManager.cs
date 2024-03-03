@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure.Core;
 using Business.Abstract;
+using Business.Constants.Messages;
 using Business.Dtos.BootcampDto.Request;
 using Business.Dtos.BootcampDto.Response;
 using Business.Dtos.BootcampStateDto.Request;
@@ -36,7 +37,7 @@ namespace Business.Concretes
             BootcampState bootcampState = _mapper.Map<BootcampState>(request);
             await _repository.AddAsync(bootcampState);
             CreateBootcampStateResponse response = _mapper.Map<CreateBootcampStateResponse>(bootcampState);
-            return new SuccessDataResult<CreateBootcampStateResponse>(response, "State Eklendi.");
+            return new SuccessDataResult<CreateBootcampStateResponse>(response, BootcampStateMessages.Added);
         }
 
         public async Task<IResult> DeleteAsync(DeleteBootcampStateRequest request)
@@ -45,14 +46,14 @@ namespace Business.Concretes
             BootcampState bootcampState = _mapper.Map<BootcampState>(request);
             await _repository.DeleteAsync(bootcampState);
             DeleteBootcampStateResponse response = _mapper.Map<DeleteBootcampStateResponse>(bootcampState);
-            return new SuccessResult("Silme Başarılı");
+            return new SuccessResult(BootcampStateMessages.Deleted);
         }
 
         public async Task<IDataResult<List<GetAllBootcampStateResponse>>> GetAllAsync()
         {
             List<BootcampState> bootcampStates = await _repository.GetAllAsync();
             List<GetAllBootcampStateResponse> responses = _mapper.Map<List<GetAllBootcampStateResponse>>(bootcampStates);
-            return new SuccessDataResult<List<GetAllBootcampStateResponse>>(responses,"Listeleme başarılı.");
+            return new SuccessDataResult<List<GetAllBootcampStateResponse>>(responses,BootcampStateMessages.GetAllListed);
         }
 
         public async Task<IDataResult<GetByIdBootcampStateResponse>> GetByIdAsync(int id)
@@ -60,7 +61,7 @@ namespace Business.Concretes
             await _rules.CheckIdIsExists(id);
             BootcampState bootcampState = await _repository.GetAsync(x=> x.Id == id);
             GetByIdBootcampStateResponse response = _mapper.Map<GetByIdBootcampStateResponse>(bootcampState);
-            return new SuccessDataResult<GetByIdBootcampStateResponse>(response,"Id' ye göre listeleme başarılı");
+            return new SuccessDataResult<GetByIdBootcampStateResponse>(response,BootcampStateMessages.GetByIdListed);
         }
 
         public async Task<IDataResult<UpdateBootcampStateResponse>> UpdateAsync(UpdateBootcampStateRequest request)
@@ -71,7 +72,7 @@ namespace Business.Concretes
             await _repository.UpdateAsync(bootcampState);
 
             UpdateBootcampStateResponse response = _mapper.Map<UpdateBootcampStateResponse>(bootcampState);
-            return new SuccessDataResult<UpdateBootcampStateResponse>(response, "Güncelleme başarılı");
+            return new SuccessDataResult<UpdateBootcampStateResponse>(response, BootcampStateMessages.Updated);
         }
         public async Task CheckIdIsExists(int id)
         {

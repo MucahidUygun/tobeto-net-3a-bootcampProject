@@ -14,6 +14,7 @@ using Core.Exceptions.Types;
 using DataAccess.Concretes.Repository;
 using Azure.Core;
 using Business.Rules;
+using Business.Constants.Messages;
 
 namespace Business.Concretes
 {
@@ -32,7 +33,7 @@ namespace Business.Concretes
         public async Task<IDataResult<List<GetAllInstructorResponse>>> GetAllAsync()
         {
             List<GetAllInstructorResponse> instructors = _mapper.Map<List<GetAllInstructorResponse>>(await _instructorRepository.GetAllAsync());
-            return new SuccessDataResult<List<GetAllInstructorResponse>>(instructors,"Başarıyla Listelendi");
+            return new SuccessDataResult<List<GetAllInstructorResponse>>(instructors, InstructorMessages.GetAllListed);
         }
 
         public async Task<IDataResult<GetByIdInstructorResponse>> GetByIdAsync(int id)
@@ -40,7 +41,7 @@ namespace Business.Concretes
             await _rules.CheckIdIsExists(id);
             Instructor instructor = await _instructorRepository.GetAsync(x => x.Id == id);
             GetByIdInstructorResponse response = _mapper.Map<GetByIdInstructorResponse>(instructor);
-            return new SuccessDataResult<GetByIdInstructorResponse>(response, "Başarıyla Id'ye göre listelendi");
+            return new SuccessDataResult<GetByIdInstructorResponse>(response, InstructorMessages.GetByIdListed);
         }
 
         public async Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request)
@@ -49,7 +50,7 @@ namespace Business.Concretes
             await _instructorRepository.AddAsync(instructor);
 
             CreateInstructorResponse response = _mapper.Map<CreateInstructorResponse>(instructor);
-            return new SuccessDataResult<CreateInstructorResponse>(response,"Başarıyla Eklendi.");
+            return new SuccessDataResult<CreateInstructorResponse>(response, InstructorMessages.Added);
         }
 
         public async Task<IResult> DeleteAsync(DeleteInstructorRequest request)
@@ -59,7 +60,7 @@ namespace Business.Concretes
             await _instructorRepository.DeleteAsync(instructor);
 
             DeleteInstructorResponse response = _mapper.Map<DeleteInstructorResponse>(instructor);
-            return new SuccessResult("Başarıyla silindi");
+            return new SuccessResult(InstructorMessages.Deleted);
         }
 
         public async Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
@@ -70,7 +71,7 @@ namespace Business.Concretes
 
             await _instructorRepository.UpdateAsync(instructor);
             UpdateInstructorResponse response = _mapper.Map<UpdateInstructorResponse>(instructor);
-            return new SuccessDataResult<UpdateInstructorResponse>(response,"Başarıyla Güncellendi.");
+            return new SuccessDataResult<UpdateInstructorResponse>(response, InstructorMessages.Updated);
         }
 
         public async Task CheckIdIsExists(int id)

@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants.Messages;
 using Core.CrossCuttingConcerns;
 using Core.Exceptions.Types;
 using DataAccess.Abstract;
@@ -24,7 +25,7 @@ namespace Business.Rules
         {
             var entity = await _repository.GetAsync(x => x.Id == id);
             if (entity is null)
-                throw new BusinessException("Blacklist already not exists");
+                throw new BusinessException(BlacklistMessages.NotExists);
         }
         public async Task CheckApplicantIdIsExists(int id)
         {

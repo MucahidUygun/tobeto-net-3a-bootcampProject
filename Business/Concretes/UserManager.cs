@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstract;
+using Business.Constants.Messages;
 using Business.Dtos.User.Request;
 using Business.Dtos.User.Response;
 using Business.Rules;
@@ -31,7 +32,7 @@ namespace Business.Concretes
         public async Task<IDataResult<List<GetAllUserResponse>>> GetAllAsync()
         {
             List<GetAllUserResponse> list = _mapper.Map<List<GetAllUserResponse>>(await _userRepository.GetAllAsync());
-            return new SuccessDataResult<List<GetAllUserResponse>>(list,"Başarıyla Listelendi");
+            return new SuccessDataResult<List<GetAllUserResponse>>(list,UserMessages.GetAllListed);
 
         }
 
@@ -40,7 +41,7 @@ namespace Business.Concretes
             await _rules.CheckIdIsExists(id);
             User user = await _userRepository.GetAsync(x => x.Id == id);
             GetByIdResponse response = _mapper.Map<GetByIdResponse>(user);
-            return new SuccessDataResult<GetByIdResponse>(response,"Başarıyla Eklendi.");
+            return new SuccessDataResult<GetByIdResponse>(response,UserMessages.GetByIdListed);
         }
 
         

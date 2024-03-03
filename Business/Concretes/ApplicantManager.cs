@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure.Core;
 using Business.Abstract;
+using Business.Constants.Messages;
 using Business.Dtos.ApplicantDtos.Request;
 using Business.Dtos.ApplicantDtos.Response;
 using Business.Rules;
@@ -33,7 +34,7 @@ namespace Business.Concretes
         {
             List<GetAllApplicantResponse> responses = _mapper.Map<List<GetAllApplicantResponse>>(await _applicantRepository.GetAllAsync());
  
-            return new SuccessDataResult<List<GetAllApplicantResponse>>(responses, "Başarıyla Listelendi.");
+            return new SuccessDataResult<List<GetAllApplicantResponse>>(responses, ApplicantMessages.GetAllListed);
         }
 
         public async Task<IDataResult<GetByIdApplicantResponse>> GetByIdAsync(int id)
@@ -42,7 +43,7 @@ namespace Business.Concretes
             Applicant applicant = await _applicantRepository.GetAsync(x => x.Id == id);
             GetByIdApplicantResponse response = _mapper.Map<GetByIdApplicantResponse>(applicant);
             
-            return new SuccessDataResult<GetByIdApplicantResponse>(response,"Id ye göre listelendi");
+            return new SuccessDataResult<GetByIdApplicantResponse>(response,ApplicantMessages.GetByIdListed);
         }
 
         public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
@@ -52,7 +53,7 @@ namespace Business.Concretes
 
             CreateApplicantResponse response = _mapper.Map<CreateApplicantResponse>(applicant);
 
-            return new SuccessDataResult<CreateApplicantResponse>(response,"Başarıyla eklendi");
+            return new SuccessDataResult<CreateApplicantResponse>(response,ApplicantMessages.Added);
         }
 
         public async Task<IResult> DeleteAsync(DeleteApplicantRequest request)
@@ -62,7 +63,7 @@ namespace Business.Concretes
             await _applicantRepository.DeleteAsync(applicant);
 
             DeleteApplicantResponse response = _mapper.Map<DeleteApplicantResponse>(applicant);
-            return new SuccessResult("Başarıyla Silindi");
+            return new SuccessResult(ApplicantMessages.Deleted);
         }
 
         public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
@@ -73,7 +74,7 @@ namespace Business.Concretes
             await _applicantRepository.UpdateAsync(applicant);
 
             UpdateApplicantResponse response = _mapper.Map<UpdateApplicantResponse>(applicant);
-            return new SuccessDataResult<UpdateApplicantResponse>(response,"Başarıyla Güncellendi");
+            return new SuccessDataResult<UpdateApplicantResponse>(response,ApplicantMessages.Updated);
         }
 
         public async Task CheckIdIsExists(int id)

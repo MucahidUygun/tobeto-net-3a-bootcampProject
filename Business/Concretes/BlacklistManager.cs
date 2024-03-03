@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure.Core;
 using Business.Abstract;
+using Business.Constants.Messages;
 using Business.Dtos.ApplicantDtos.Request;
 using Business.Dtos.ApplicantDtos.Response;
 using Business.Dtos.Blacklists.Requests;
@@ -38,7 +39,7 @@ namespace Business.Concretes
             Blacklist blacklist = _mapper.Map<Blacklist>(request);
             await _repository.AddAsync(blacklist);
             CreatedBlacklistResponse response = _mapper.Map<CreatedBlacklistResponse>(blacklist);
-            return new SuccessDataResult<CreatedBlacklistResponse>(response,"Başarıyla Eklendi");
+            return new SuccessDataResult<CreatedBlacklistResponse>(response,BlacklistMessages.Added);
         }
 
         public async Task<IResult> DeleteAsync(DeleteBlacklistRequest request)
@@ -46,14 +47,14 @@ namespace Business.Concretes
             await _rules.CheckIdIsExists(request.Id);
             Blacklist blacklist = await _repository.GetAsync(x=>x.Id == request.Id);
             await _repository.DeleteAsync(blacklist);
-            return new SuccessResult("Başarıyla Silindi");
+            return new SuccessResult(BlacklistMessages.Deleted);
         }
 
         public async Task<IDataResult<List<GetAllBlacklistResponse>>> GetAllAsync()
         {
             List<GetAllBlacklistResponse> responses = _mapper.Map<List<GetAllBlacklistResponse>>(await _repository.GetAllAsync(include: x => x.Include(x => x.Applicant)));
             
-            return new SuccessDataResult<List<GetAllBlacklistResponse>>(responses,"Başarıyla Listelendi.");
+            return new SuccessDataResult<List<GetAllBlacklistResponse>>(responses,BlacklistMessages.GetAllListed);
         }
 
         public async Task<IDataResult<GetByApplicantIdResponse>> GetByApplicantIdAsync(int id)
@@ -62,7 +63,7 @@ namespace Business.Concretes
             Blacklist blacklist = await _repository.GetAsync(x => x.ApplicantId == id, include: x => x.Include(x => x.Applicant));
             GetByApplicantIdResponse response = _mapper.Map<GetByApplicantIdResponse>(blacklist);
 
-            return new SuccessDataResult<GetByApplicantIdResponse>(response, "Başarıyla listelendi");
+            return new SuccessDataResult<GetByApplicantIdResponse>(response, BlacklistMessages.GetByApplicantIdListed);
         }
 
         public async Task<IDataResult<GetByIdBlacklistResponse>> GetByIdBlacklistAsync(int id)
@@ -71,7 +72,7 @@ namespace Business.Concretes
             Blacklist blacklist = await _repository.GetAsync(x => x.Id == id, include: x => x.Include(x => x.Applicant));
             GetByIdBlacklistResponse responses = _mapper.Map<GetByIdBlacklistResponse>(blacklist);
 
-            return new SuccessDataResult<GetByIdBlacklistResponse>(responses, "Başarıyla Listelendi.");
+            return new SuccessDataResult<GetByIdBlacklistResponse>(responses, BlacklistMessages.GetByBlacklistIdListed);
         }
 
         public async Task<IDataResult<UpdatedBlacklistResponse>> UpdateAsync(UpdateBlacklistRequest request)
@@ -83,7 +84,7 @@ namespace Business.Concretes
             await _repository.UpdateAsync(blacklist);
             UpdatedBlacklistResponse response = _mapper.Map<UpdatedBlacklistResponse>(blacklist);
 
-            return new SuccessDataResult<UpdatedBlacklistResponse>(response);
+            return new SuccessDataResult<UpdatedBlacklistResponse>(response,BlacklistMessages.Updated);
         }
         public async Task CheckIdIsExists(int id)
         {

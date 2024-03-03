@@ -1,4 +1,5 @@
-﻿using Core.CrossCuttingConcerns;
+﻿using Business.Constants.Messages;
+using Core.CrossCuttingConcerns;
 using Core.Exceptions.Types;
 using DataAccess.Abstract;
 using DataAccess.Concretes.Repository;
@@ -22,7 +23,7 @@ namespace Business.Rules
         {
             var entity = await _repository.GetAsync(x => x.Id == id);
             if (entity is null)
-                throw new BusinessException("Employee already not exists");
+                throw new BusinessException(EmployeeMessages.NotExists);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure.Core;
 using Business.Abstract;
+using Business.Constants.Messages;
 using Business.Dtos.ApplicationDto.Request;
 using Business.Dtos.ApplicationDto.Response;
 using Business.Rules;
@@ -43,7 +44,7 @@ namespace Business.Concretes
             await _repository.AddAsync(application);
 
             CreateApplicationResponse response = _mapper.Map<CreateApplicationResponse>(application);
-            return new SuccessDataResult<CreateApplicationResponse>(response, "Başvuru ekleme başarılı.");
+            return new SuccessDataResult<CreateApplicationResponse>(response, ApplicationMessages.Added);
         }
 
         public async Task<IResult> DeleteAsync(DeleteApplicationRequest request)
@@ -52,7 +53,7 @@ namespace Business.Concretes
             Application application = await _repository.GetAsync(x => x.Id == request.Id);
             await _repository.DeleteAsync(application);
             DeleteApplicationResponse response = _mapper.Map<DeleteApplicationResponse>(application);
-            return new SuccessResult("Başvuru silme başarılı.");
+            return new SuccessResult(ApplicationMessages.Deleted);
         }
 
         public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAllAsync()
@@ -60,7 +61,7 @@ namespace Business.Concretes
             List<Application> applications = await _repository.GetAllAsync(
                 include: x => x.Include(x => x.Applicant).Include(x => x.Bootcamp).Include(x => x.ApplicationState));
             List<GetAllApplicationResponse> responses = _mapper.Map<List<GetAllApplicationResponse>>(applications);
-            return new SuccessDataResult<List<GetAllApplicationResponse>>(responses, "Listeleme başarılı");
+            return new SuccessDataResult<List<GetAllApplicationResponse>>(responses, ApplicationMessages.GetAllListed);
         }
 
         public async Task<IDataResult<GetByIdApplicationResponse>> GetByIdAsync(int id)
@@ -70,7 +71,7 @@ namespace Business.Concretes
                 (x => x.Id == id, include: x => x.Include(x => x.Applicant).Include(x => x.Bootcamp).Include(x => x.ApplicationState));
             GetByIdApplicationResponse response = _mapper.Map<GetByIdApplicationResponse>(application);
 
-            return new SuccessDataResult<GetByIdApplicationResponse>(response);
+            return new SuccessDataResult<GetByIdApplicationResponse>(response,ApplicationMessages.GetByIdListed);
         }
 
         public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
@@ -85,7 +86,7 @@ namespace Business.Concretes
             await _repository.UpdateAsync(application);
 
             UpdateApplicationResponse response = _mapper.Map<UpdateApplicationResponse>(application);
-            return new SuccessDataResult<UpdateApplicationResponse>(response, "Güncelleme başarılı");
+            return new SuccessDataResult<UpdateApplicationResponse>(response, ApplicationMessages.Updated);
         }
 
     }
