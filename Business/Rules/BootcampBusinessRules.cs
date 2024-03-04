@@ -1,6 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants.Messages;
-using Core.CrossCuttingConcerns;
+using Core.CrossCuttingConcerns.Rules;
 using Core.Exceptions.Types;
 using DataAccess.Abstract;
 using DataAccess.Concretes.Repository;

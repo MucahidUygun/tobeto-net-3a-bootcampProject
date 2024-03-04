@@ -1,22 +1,15 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using Business.Abstract;
 using Business.Constants.Messages;
 using Business.Dtos.ApplicationDto.Request;
 using Business.Dtos.ApplicationDto.Response;
 using Business.Rules;
-using Core.DataAccess;
-using Core.Exceptions.Types;
+using Core.Aspects.Autofac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using DataAccess.Abstract;
-using DataAccess.Concretes.Repository;
 using DataAccess.Utilities.Results;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concretes
 {
@@ -55,7 +48,7 @@ namespace Business.Concretes
             DeleteApplicationResponse response = _mapper.Map<DeleteApplicationResponse>(application);
             return new SuccessResult(ApplicationMessages.Deleted);
         }
-
+        [LogAspect(typeof(MongoDbLogger))]
         public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAllAsync()
         {
             List<Application> applications = await _repository.GetAllAsync(
