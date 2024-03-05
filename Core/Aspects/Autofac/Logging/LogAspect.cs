@@ -43,7 +43,7 @@ namespace Core.Aspects.Autofac.Logging
                 User = _httpContextAccessor.HttpContext == null || _httpContextAccessor.HttpContext.User.Identity.Name == null ? "?"
                 : _httpContextAccessor.HttpContext.User.Identity.Name
             };
-            _loggerServiceBase.Info(logDetail.MethodName);
+            _loggerServiceBase.Info(JsonConvert.SerializeObject(logDetail));
         }
 
     }

@@ -5,6 +5,8 @@ using Business.Constants.Messages;
 using Business.Dtos.ApplicantDtos.Request;
 using Business.Dtos.ApplicantDtos.Response;
 using Business.Rules;
+using Core.Aspects.Autofac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Exceptions.Types;
 using DataAccess.Abstract;
 using DataAccess.Concretes.Repository;
@@ -46,6 +48,7 @@ namespace Business.Concretes
             return new SuccessDataResult<GetByIdApplicantResponse>(response,ApplicantMessages.GetByIdListed);
         }
 
+        [LogAspect(typeof(MongoDbLogger))]
         public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
         {
             Applicant applicant = _mapper.Map<Applicant>(request);

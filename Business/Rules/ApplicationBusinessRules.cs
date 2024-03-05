@@ -40,7 +40,6 @@ namespace Business.Rules
             var entity = await _blacklistService.GetByApplicantIdAsync(applicantId);
             if (entity.Data != null)
                 throw new BusinessException(ApplicationMessages.IsInBlackList);
-
         }
 
         public async Task CheckIfApplicantIdIsExists(int id)

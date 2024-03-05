@@ -29,7 +29,6 @@ namespace Business.Concretes
 
         public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
         {
-            await _rules.CheckIfApplicantIdIsExists(request.ApplicantId);
             await _rules.CheckIfApplicantIsBlacklist(request.ApplicantId);
             await _rules.CheckIfBootcampIdExists(request.BootcampId);
             await _rules.CheckIfBootcampStateExitst(request.ApplicationStateId);
@@ -48,7 +47,6 @@ namespace Business.Concretes
             DeleteApplicationResponse response = _mapper.Map<DeleteApplicationResponse>(application);
             return new SuccessResult(ApplicationMessages.Deleted);
         }
-        [LogAspect(typeof(MongoDbLogger))]
         public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAllAsync()
         {
             List<Application> applications = await _repository.GetAllAsync(
