@@ -69,7 +69,6 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
         {
             await _rules.CheckIdIsExists(request.Id);
-            await _rules.CheckIfApplicantIdIsExists(request.ApplicantId);
             await _rules.CheckIfApplicantIsBlacklist(request.ApplicantId);
             await _rules.CheckIfBootcampIdExists(request.BootcampId);
             await _rules.CheckIfBootcampStateExitst(request.ApplicationStateId);

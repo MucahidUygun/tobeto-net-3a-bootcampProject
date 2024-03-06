@@ -42,11 +42,6 @@ namespace Business.Rules
                 throw new BusinessException(ApplicationMessages.IsInBlackList);
         }
 
-        public async Task CheckIfApplicantIdIsExists(int id)
-        {
-            await _applicantService.CheckIdIsExists(id);
-        }
-
         public async Task CheckIfBootcampIdExists(int id)
         {
             await _bootcampService.CheckIdIsExists(id);
