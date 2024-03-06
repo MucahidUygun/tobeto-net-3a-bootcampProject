@@ -27,6 +27,7 @@ namespace Business.Concretes
             _repository = repository;
         }
 
+        [LogAspect(typeof(MssqlLogger))]
         public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
         {
             await _rules.CheckIfApplicantIsBlacklist(request.ApplicantId);

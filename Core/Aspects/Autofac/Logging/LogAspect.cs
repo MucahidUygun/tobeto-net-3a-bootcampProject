@@ -5,6 +5,8 @@ using Core.Utilities.Interceptors;
 using Core.Utilities.Messages;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Core.Utilities.IoC;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Aspects.Autofac.Logging
 {
@@ -18,10 +20,10 @@ namespace Core.Aspects.Autofac.Logging
         {
             if (loggerService.BaseType != typeof(LoggerServiceBase))
             {
-                throw new Exception(AspectMessages.WrongLoggerType);
+                throw new ArgumentException(AspectMessages.WrongLoggerType);
             }
-            _loggerServiceBase = (LoggerServiceBase)Activator.CreateInstance(loggerService);
-            _httpContextAccessor = (IHttpContextAccessor)Activator.CreateInstance(typeof(HttpContextAccessor));
+            _loggerServiceBase = (LoggerServiceBase)ServiceTool.ServiceProvider.GetRequiredService(loggerService);
+            _httpContextAccessor = ServiceTool.ServiceProvider.GetRequiredService<IHttpContextAccessor>();
         }
 
         protected override void OnBefore(IInvocation invocation)

@@ -22,7 +22,8 @@ namespace DataAccess.Concretes.EntityFramework.EntityTypeConfigurations
             builder.Property(x => x.DateOfBirth).HasColumnName("DateOfBirth").IsRequired();
             builder.Property(x => x.NationalIdentity).HasColumnName("NationalIdentity").IsRequired();
             builder.Property(x => x.Email).HasColumnName("Email").IsRequired();
-            builder.Property(x => x.Password).HasColumnName("Password").IsRequired();
+            builder.Property(x => x.PasswordHash).HasColumnName("PasswordHash").IsRequired();
+            builder.Property(x => x.PasswordSalt).HasColumnName("PasswordSalt").IsRequired();
         }
     }
 }

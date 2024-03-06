@@ -1,13 +1,13 @@
-﻿using Core.Entities;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Business.Dtos.EmployeeDto.Request
 {
-    public class User:BaseEntity<int>
+    public class EmployeeForRegisterDto
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }
@@ -15,7 +15,7 @@ namespace Entities.Concrete
         public DateTime DateOfBirth { get; set; }
         public string NationalIdentity { get; set; }
         public string Email { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
+        public string Password { get; set; }
+        public string Position { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DataAccess.Abstract;
+﻿using Core.Exceptions.Extensions;
+using DataAccess.Abstract;
 using DataAccess.Concretes.EntityFramework.Contexts;
 using DataAccess.Concretes.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -24,22 +25,6 @@ namespace DataAccess
 
 
             services.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.ServiceType.Name.EndsWith("Repository"));
-
-            return services;
-        }
-        public static IServiceCollection RegisterAssemblyTypes(this IServiceCollection services, Assembly assembly)
-        {
-            var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract);
-            foreach (Type? item in types)
-            {
-                var interfaces = item.GetInterfaces();
-
-                foreach (var @interface in interfaces)
-                {
-                    services.AddScoped(@interface, item);
-                }
-
-            }
 
             return services;
         }

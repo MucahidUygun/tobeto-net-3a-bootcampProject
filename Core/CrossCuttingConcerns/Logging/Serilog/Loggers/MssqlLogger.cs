@@ -1,27 +1,27 @@
 ﻿using Serilog.Sinks.MSSqlServer;
 using Serilog;
+using Core.CrossCuttingConcerns.Logging.Serilog.ConfigurationModels;
+using Core.Utilities.IoC;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Core.Utilities.Messages;
 
 namespace Core.CrossCuttingConcerns.Logging.Serilog.Loggers
 {
     public class MssqlLogger : LoggerServiceBase
     {
-        //public MssqlLogger()
-        //{
-
-        //}
         public MssqlLogger()
         {
-            //MssqlConfiguration logConfiguration = configuration.GetSection("SerilogConfigurations:MssqlConfiguration")
-            //    .Get<MssqlConfiguration>() ?? throw new Exception("");
+            var configuration = ServiceTool.ServiceProvider.GetRequiredService<IConfiguration>();
+            var logConfig = configuration.GetSection("SerilogConfigurations:MssqlConfiguration").Get<MssqlConfiguration>() 
+                ?? throw new Exception(SerilogMessages.NullOptionsMessage);
             MSSqlServerSinkOptions sinkOptions = new()
-            { TableName = "Logs", AutoCreateSqlTable = true };
+            { TableName = logConfig.TableName, AutoCreateSqlTable = logConfig.AutoCreateSqlTable };
 
             ColumnOptions columnOptions = new();
             global::Serilog.Core.Logger serilogConfig = new LoggerConfiguration().WriteTo
-                .MSSqlServer("Server=EBGAZ;Database=TobetoDotNet3ADB;Trusted_Connection=true;TrustServerCertificate =true", sinkOptions, columnOptions: columnOptions).CreateLogger();
+            .MSSqlServer(connectionString: logConfig.ConnectionString, sinkOptions: sinkOptions, columnOptions: columnOptions).CreateLogger();
             Logger = serilogConfig;
-
-
         }
     }
 }
