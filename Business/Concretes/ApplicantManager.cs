@@ -48,7 +48,7 @@ namespace Business.Concretes
             return new SuccessDataResult<GetByIdApplicantResponse>(response,ApplicantMessages.GetByIdListed);
         }
 
-        [LogAspect(typeof(MongoDbLogger))]
+        [LogAspect(typeof(MssqlLogger))]
         public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
         {
             Applicant applicant = _mapper.Map<Applicant>(request);
@@ -59,6 +59,7 @@ namespace Business.Concretes
             return new SuccessDataResult<CreateApplicantResponse>(response,ApplicantMessages.Added);
         }
 
+        [LogAspect(typeof(MssqlLogger))]
         public async Task<IResult> DeleteAsync(DeleteApplicantRequest request)
         {
             await _rules.CheckIdIsExists(request.Id);
