@@ -4,6 +4,7 @@ using Business.Constants.Messages;
 using Business.Dtos.User.Request;
 using Business.Dtos.User.Response;
 using Business.Rules;
+using Core.Utilities.Security.Entities;
 using DataAccess.Abstract;
 using DataAccess.Utilities.Results;
 using Entities.Concrete;
@@ -44,6 +45,10 @@ namespace Business.Concretes
             return new SuccessDataResult<GetByIdResponse>(response,UserMessages.GetByIdListed);
         }
 
-        
+        public async Task<IDataResult<User>> GetByEmailAsync(string email)
+        {
+            User user = await _userRepository.GetAsync(x=>x.Email == email);
+            return new SuccessDataResult<User>(user,"User Listed By Email");
+        }
     }
 }

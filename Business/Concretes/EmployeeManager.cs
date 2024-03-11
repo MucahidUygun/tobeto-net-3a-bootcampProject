@@ -46,12 +46,12 @@ namespace Business.Concretes
             return new SuccessDataResult<GetByIdEmployeeResponse>(response, EmployeeMessages.GetByIdListed);
         }
 
-        public async Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request)
+        public async Task<IDataResult<CreateEmployeeResponse>> AddAsync(Employee request)
         {
-            Employee employee = _mapper.Map<Employee>(request);
-            await _employeeRepository.AddAsync(employee);
+            //Employee employee = _mapper.Map<Employee>(request);
+            await _employeeRepository.AddAsync(request);
 
-            CreateEmployeeResponse response = _mapper.Map<CreateEmployeeResponse>(employee);
+            CreateEmployeeResponse response = _mapper.Map<CreateEmployeeResponse>(request);
 
             return new SuccessDataResult<CreateEmployeeResponse>(response, EmployeeMessages.Added);
         }

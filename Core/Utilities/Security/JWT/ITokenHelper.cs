@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Core.Utilities.Security.JWT
 {
-    public class Employee : User
+    public interface ITokenHelper
     {
-        public string Position { get; set; }
+        AccessToken CreateToken(User user,List<OperationClaim> operationClaims);
     }
 }

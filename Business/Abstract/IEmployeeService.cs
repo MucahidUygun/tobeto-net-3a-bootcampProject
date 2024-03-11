@@ -1,6 +1,7 @@
 ﻿using Business.Dtos.EmployeeDto.Request;
 using Business.Dtos.EmployeeDto.Response;
 using DataAccess.Utilities.Results;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Business.Abstract
     {
         Task<IDataResult<List<GetAllEmployeeResponse>>> GetAllAsync();
         Task<IDataResult<GetByIdEmployeeResponse>> GetByIdAsync(int id);
-        Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request);
+        Task<IDataResult<CreateEmployeeResponse>> AddAsync(Employee request);
         Task<IResult> DeleteAsync(DeleteEmployeeRequest request);
         Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request);
 

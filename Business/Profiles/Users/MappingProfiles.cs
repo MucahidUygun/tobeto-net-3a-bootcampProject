@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Dtos.User.Response;
+using Core.Utilities.Security.Entities;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;

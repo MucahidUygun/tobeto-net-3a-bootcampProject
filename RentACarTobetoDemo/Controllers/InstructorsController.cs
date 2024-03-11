@@ -30,11 +30,11 @@ namespace WebAPI.Controllers
             return HandleDataResult(await _instructorService.GetByIdAsync(id));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddAsync(CreateInstructorRequest request)
-        {
-            return HandleDataResult(await _instructorService.AddAsync(request));
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> AddAsync(CreateInstructorRequest request)
+        //{
+        //    return HandleDataResult(await _instructorService.AddAsync(request));
+        //}
 
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(DeleteInstructorRequest request)

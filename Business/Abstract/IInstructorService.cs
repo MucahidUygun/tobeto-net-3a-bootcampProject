@@ -1,6 +1,7 @@
 ﻿using Business.Dtos.InstructorDto.Request;
 using Business.Dtos.InstructorDto.Response;
 using DataAccess.Utilities.Results;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Business.Abstract
     {
         Task<IDataResult<List<GetAllInstructorResponse>>> GetAllAsync();
         Task<IDataResult<GetByIdInstructorResponse>> GetByIdAsync(int id);
-        Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request);
+        Task<IDataResult<CreateInstructorResponse>> AddAsync(Instructor request);
         Task<IResult> DeleteAsync(DeleteInstructorRequest request);
         Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request);
 

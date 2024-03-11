@@ -1,4 +1,4 @@
-﻿using Core.Exceptions.Extensions;
+﻿using Core.Extensions;
 using DataAccess.Abstract;
 using DataAccess.Concretes.EntityFramework.Contexts;
 using DataAccess.Concretes.Repository;

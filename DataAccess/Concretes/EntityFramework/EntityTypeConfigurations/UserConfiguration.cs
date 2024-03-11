@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Security.Entities;
+using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -24,6 +25,8 @@ namespace DataAccess.Concretes.EntityFramework.EntityTypeConfigurations
             builder.Property(x => x.Email).HasColumnName("Email").IsRequired();
             builder.Property(x => x.PasswordHash).HasColumnName("PasswordHash").IsRequired();
             builder.Property(x => x.PasswordSalt).HasColumnName("PasswordSalt").IsRequired();
+
+            builder.HasMany(t => t.UserOperationClaims);
         }
     }
 }

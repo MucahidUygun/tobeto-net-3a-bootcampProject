@@ -29,11 +29,11 @@ namespace WebAPI.Controllers
             return HandleDataResult(await _applicantService.GetByIdAsync(id));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddAsync(CreateApplicantRequest request)
-        {
-            return HandleDataResult(await _applicantService.AddAsync(request));
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> AddAsync(CreateApplicantRequest request)
+        //{
+        //    return HandleDataResult(await _applicantService.AddAsync(request));
+        //}
 
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(DeleteApplicantRequest request)

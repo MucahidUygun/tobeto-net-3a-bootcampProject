@@ -1,5 +1,6 @@
 ﻿using Business.Dtos.User.Request;
 using Business.Dtos.User.Response;
+using Core.Utilities.Security.Entities;
 using DataAccess.Utilities.Results;
 using Entities.Concrete;
 using System;
@@ -14,6 +15,7 @@ namespace Business.Abstract
     {
         Task<IDataResult<List<GetAllUserResponse>>> GetAllAsync();
         Task<IDataResult<GetByIdResponse>> GetByIdAsync(int id);
+        Task<IDataResult<User>> GetByEmailAsync(string email);
 
         //List<GetAllUserResponse> GetAll();
         //GetByIdUserResponse GetById(int id);

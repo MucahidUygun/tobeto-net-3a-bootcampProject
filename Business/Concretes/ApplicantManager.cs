@@ -49,12 +49,12 @@ namespace Business.Concretes
         }
 
         [LogAspect(typeof(MssqlLogger))]
-        public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
+        public async Task<IDataResult<CreateApplicantResponse>> AddAsync(Applicant request)
         {
-            Applicant applicant = _mapper.Map<Applicant>(request);
-            await _applicantRepository.AddAsync(applicant);
+            //Applicant applicant = _mapper.Map<Applicant>(request);
+            await _applicantRepository.AddAsync(request);
 
-            CreateApplicantResponse response = _mapper.Map<CreateApplicantResponse>(applicant);
+            CreateApplicantResponse response = _mapper.Map<CreateApplicantResponse>(request);
 
             return new SuccessDataResult<CreateApplicantResponse>(response,ApplicantMessages.Added);
         }

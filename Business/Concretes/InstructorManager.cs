@@ -44,12 +44,12 @@ namespace Business.Concretes
             return new SuccessDataResult<GetByIdInstructorResponse>(response, InstructorMessages.GetByIdListed);
         }
 
-        public async Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request)
+        public async Task<IDataResult<CreateInstructorResponse>> AddAsync(Instructor request)
         {
-            Instructor instructor = _mapper.Map<Instructor>(request);
-            await _instructorRepository.AddAsync(instructor);
+            //Instructor instructor = _mapper.Map<Instructor>(request);
+            await _instructorRepository.AddAsync(request);
 
-            CreateInstructorResponse response = _mapper.Map<CreateInstructorResponse>(instructor);
+            CreateInstructorResponse response = _mapper.Map<CreateInstructorResponse>(request);
             return new SuccessDataResult<CreateInstructorResponse>(response, InstructorMessages.Added);
         }
 
